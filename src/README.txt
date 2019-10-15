@@ -1,3 +1,3 @@
 Variables--Uncapitalized to start.
 Functions--Capitalize to start.
-Dashes rather than camel case for multiple word variables.
+Underscores rather than camel case for multiple word variables.
