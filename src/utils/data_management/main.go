@@ -18,6 +18,8 @@ const CONSUMER_SECRET string = ""
 const ACCESS_TOKEN string = ""
 const ACCESS_SECRET string = ""
 
+const HASHTAGFILE = "Hashtags.txt"
+
 // TODO: Create routine for grabbing historical tweets by hashtag
 // TODO: Setup and teardown code for Mongo/Twitter API calls
 // TODO: Mongo Emission info
@@ -48,12 +50,37 @@ func main() {
 	twitter_client := twitter.NewClient(http_client)
 
 	// Get the hashtags we need
-	// TODO: Get from file
-	hashtags := os.Args[1:]
+	hashtags := getHashtags()
 	for _, hashtag := range hashtags {
 		// Pull info from twitter with query as hashtag
 		// If successful
 		// Create hashtag collection if it doesn't exist
 		collection := mongo_client.Database("Hashtags").Collection(hashtag)
 	}
+}
+
+func getHashtags() {
+	file, err := os.Open(HASHTAGFILE)
+    if err != nil{
+    	fmt.Println("ERROR")
+    	fmt.Println(err)
+    }
+
+    text, err := ioutil.ReadAll(file)
+    textString := string(text)
+  	hashtagList := strings.Split(textString,"\n")
+  	var hashtagList2 []string
+
+  	for _, element := range hashtagList{
+  		if element[0] == 35{
+  			hashtagList2 = append(hashtagList2, element[1:])
+  		} else{
+  			hashtagList2 = append(hashtagList2, element)
+  		}
+  	}
+  	for _, element := range hashtagList2{
+  		fmt.Println(element)
+  	}
+  	
+	return hashtagList2
 }
