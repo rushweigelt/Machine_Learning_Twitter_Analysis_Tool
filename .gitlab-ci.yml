@@ -1,0 +1,11 @@
+default:
+  image: python:3.7
+
+job:
+  before_script:
+    - python3 -m venv env
+    - source env/bin/activate
+  script:
+    - cd src
+    - pip install -r requirements.txt
+    - python Hello_World.py
