@@ -1,0 +1,7 @@
+# Python
+*.pyc
+env/
+
+# IDE Config
+.idea/
+.vscode/
