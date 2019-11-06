@@ -38,7 +38,7 @@ def CombineAndLabelLimited(botDataName, genuineDataName):
     out_path = os.path.join(out_folder, "Combined_"+ bot_data_file_name[:-4] + "_AND_" + genuine_data_file_name[:-4] + "_" + str(entryLimit) + ".csv")
     bot_data = os.path.join(data_folder, botDataName)
     genuine_data = os.path.join(data_folder, genuineDataName)
-    combined_headers = ['tweetid', 'userid', 'tweet', 'reply_count', 'retweet_count', 'hashtag_count', 'url_count', "mention_count", 'label']
+    combined_headers = ['tweetid', 'userid', 'tweet', 'reply_count', 'like_count', 'retweet_count', 'hashtag_count', 'url_count', "mention_count", 'label']
     with open(out_path, 'w', encoding='latin-1', newline='') as combined_file:
         csv_writer = csv.DictWriter(combined_file, fieldnames=combined_headers)
         csv_writer.writeheader()
@@ -47,7 +47,7 @@ def CombineAndLabelLimited(botDataName, genuineDataName):
             i = 0
             for row in csv_reader:
                 new_row = {'tweetid' : row['tweetid'], 'userid' : row['userid'], 'tweet' : row['tweet_text'], 'reply_count' : row['reply_count'],
-                           'retweet_count' : row['retweet_count'], 'hashtag_count' : row['hashtag_count'], 'url_count' : row['url_count'],
+                           'like_count' : row['like_count'], 'retweet_count' : row['retweet_count'], 'hashtag_count' : row['hashtag_count'], 'url_count' : row['url_count'],
                            'mention_count' : row['mention_count'], 'label' : 'bot'}
                 csv_writer.writerow(new_row)
                 i += 1
@@ -59,7 +59,7 @@ def CombineAndLabelLimited(botDataName, genuineDataName):
             j = 0
             for row in csv_reader_gen:
                 new_row_gen = {'tweetid' : row['tweetid'], 'userid' : row['userid'], 'tweet' : row['tweet_text'], 'reply_count' : row['reply_count'],
-                           'retweet_count' : row['retweet_count'], 'hashtag_count' : row['hashtag_count'], 'url_count' : row['url_count'],
+                           'like_count' : row['like_count'],'retweet_count' : row['retweet_count'], 'hashtag_count' : row['hashtag_count'], 'url_count' : row['url_count'],
                            'mention_count' : row['mention_count'], 'label' : 'genuine'}
                 csv_writer.writerow(new_row_gen)
                 j += 1
