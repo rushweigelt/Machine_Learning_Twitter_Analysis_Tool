@@ -22,46 +22,55 @@ def ReplaceURLsUsernames(tweet):
     return re.sub(URL_REGEX, "URL", re.sub(USERNAME_REGEX, "USERNAME", tweet))
 
 
-with open(
-    f"{DATASET_PREFIX}/{DATASET}/training.csv", encoding="latin-1"
-) as training_data:
-    reader = csv.reader(training_data)
-    fields = next(reader)
-    training_tweets = tuple(row for row in reader)
+def main():
+    with open(
+        f"{DATASET_PREFIX}/{DATASET}/training.csv", encoding="latin-1"
+    ) as training_data:
+        reader = csv.reader(training_data)
+        fields = next(reader)
+        training_tweets = tuple(row for row in reader)
 
-with open(
-    f"{DATASET_PREFIX}/{DATASET}/testing.csv", encoding="latin-1"
-) as testing_data:
-    reader = csv.reader(testing_data)
-    fields = next(reader)
-    testing_tweets = tuple(row for row in reader)
+    with open(
+        f"{DATASET_PREFIX}/{DATASET}/testing.csv", encoding="latin-1"
+    ) as testing_data:
+        reader = csv.reader(testing_data)
+        fields = next(reader)
+        testing_tweets = tuple(row for row in reader)
 
-training_tweets = [[row[0], ReplaceURLsUsernames(row[-1])] for row in training_tweets]
-testing_tweets = [[row[0], ReplaceURLsUsernames(row[-1])] for row in testing_tweets]
-
-training_X = [row[-1] for row in training_tweets]
-training_Y = np.asarray([int(row[0]) for row in training_tweets])
-
-testing_X = [row[-1] for row in testing_tweets]
-testing_Y = np.asarray([int(row[0]) for row in testing_tweets])
-
-tfidf = Pipeline([("vectorizer", CountVectorizer()), ("tfidf", TfidfTransformer()),])
-
-ranker = ModelRanking(
-    [
-        (
-            tfidf,
-            (
-                #        RandomForestClassifier(n_estimators=3, verbose=1), data is WAY too high-dimensional for this
-                LogisticRegression(verbose=1),
-                MultinomialNB(),
-                LinearSVC(verbose=1),
-            ),
-        ),
+    training_tweets = [
+        [row[0], ReplaceURLsUsernames(row[-1])] for row in training_tweets
     ]
-)
-ranker.fit(training_X, training_Y)
-print("\nScores:")
+    testing_tweets = [[row[0], ReplaceURLsUsernames(row[-1])] for row in testing_tweets]
 
-scores_and_models = ranker.score(testing_X, testing_Y)
-pprint(scores_and_models)
+    training_X = [row[-1] for row in training_tweets]
+    training_Y = np.asarray([int(row[0]) for row in training_tweets])
+
+    testing_X = [row[-1] for row in testing_tweets]
+    testing_Y = np.asarray([int(row[0]) for row in testing_tweets])
+
+    tfidf = Pipeline(
+        [("vectorizer", CountVectorizer()), ("tfidf", TfidfTransformer()),]
+    )
+
+    ranker = ModelRanking(
+        [
+            (
+                tfidf,
+                (
+                    # RandomForestClassifier(n_estimators=3, verbose=1), data is WAY too high-dimensional for this
+                    LogisticRegression(verbose=1),
+                    MultinomialNB(),
+                    LinearSVC(verbose=1),
+                ),
+            ),
+        ]
+    )
+    ranker.fit(training_X, training_Y)
+    print("\nScores:")
+
+    scores_and_models = ranker.score(testing_X, testing_Y)
+    pprint(scores_and_models)
+
+
+if __name__ == "__main__":
+    main()

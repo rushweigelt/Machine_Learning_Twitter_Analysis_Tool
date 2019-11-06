@@ -20,7 +20,14 @@ black:
   <<: *python
   stage: lint
   script:
-    - black --check *
+    - black --check **/*.py
+
+pylint:
+  <<: *python
+  stage: lint
+  allow_failure: true
+  script:
+    - pylint **/*.py
 
 test:
   <<: *python
