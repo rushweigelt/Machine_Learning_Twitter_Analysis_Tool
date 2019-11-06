@@ -7,6 +7,7 @@ Logistical Regression for TAT
 '''
 import csv
 import os
+import sys
 #Data file names. Files must be csvs and located in the 'data' folder
 filename = 'chinaBotsUnlabelled.csv'
 #Change these to the applicable fieldnames to be counted
@@ -21,7 +22,8 @@ out_folder = os.path.join(parentDirectory, "data", "preprocessed", "standardizeF
 data_file = os.path.join(data_folder, filename)
 out_path = os.path.join(out_folder, filename[:-4]+"_counted.csv")
 
-def CountListedData(filename):
+def CountListedData(file_name):
+    data_file = os.path.join(data_folder, file_name)
     headers = []
     #rip headers
     with open(data_file, mode='r', encoding='utf8') as csv_file:
@@ -85,7 +87,10 @@ def CountListedData(filename):
 
 
 def main():
-    CountListedData(filename)
+    if len(sys.argv) <= 2:
+        CountListedData(filename)
+    else:
+        CountListedData(sys.argv[1])
 
 if __name__ == "__main__":
     main()
