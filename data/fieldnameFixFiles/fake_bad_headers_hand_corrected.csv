@@ -1,0 +1,4 @@
+tweetid,userid,follower_count,following_count,account_creation_date,user_profile_description,tweet_text,reply_count,like_count,retweet_count,hashtag_count,mention_count,url_count
+1,Rush,2,3,4,6,5,7,8,0,9,1,2
+2,Foo,4,5,6,8,7,9,10,12,11,13,14
+3,Poo,9,8,7,5,6,4,3,1,2,0,1

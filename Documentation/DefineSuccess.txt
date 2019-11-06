@@ -1,0 +1,77 @@
+Define Success:
+Have an 90%+ accuracy score when detecting bots from not-bots.
+Have non-maintainable software available that will take a hashtag and search by it.
+
+-------------------------------------------------------------------
+Alex's suggestions/ideas:
+
+Definition of Success:
+Pointing the user of TAT to Twitter tweets by users that have a high
+likelihood of being written by a bot. Currently, I would say it is
+difficult to define what is a "high" likelihood. At the very least,
+I would say that TAT should point to "ambiguous" cases where it is
+uncertain for the model (maybe a 50/50) whether the tweet was made
+by a human or a bot. For example, it is highly unlikely that a tweet
+by a verified Twitter user was made by a bot. Other similar criteria
+could be applied. The very least definition of success, would then
+be that TAT should not point to these "clearly human" cases.
+
+Additionally, an alternative approach could be taken where TAT is
+purely a guidance tool. This would mean perhaps TAT simply assigns
+a probability score for an account being a bot and gives insight
+to why exactly TAT has come up with this score, leaving the ultimate
+decision/classification to the human. In this case, success would be
+giving the user of TAT a "sufficient" amount of evidence (not sure
+what this might be) to make a decision.
+
+Question:
+How do we define/quantify how close to success our final product
+is doing or gauge its performance in general?
+
+
+Dilemma:
+We can train our ML model on labeled data we collect from
+pre-assembled datasets and get an accuracy of X percent on this data.
+The purpose of the tool, however, is to make a bot/not-a-bot
+classification (or perhaps a bot probability score?) on a
+user/tweet using real world data where we do not have an
+immediately clear indicator telling us whether it is a bot or not.
+
+Possible solution #1:
+Have a human go through a set of predictions the model makes and
+judge whether the tweet in question was made by a bot. If such
+human made labelings are made for each prediction, we can get a
+rough estimate on the accuracy of our model by simply seeing what
+percentage of the predictions were accurate. If this score is close
+to the accuracy score obtained from the training datasets, we can
+say with a fair amount of confidence that our tool has been
+successful at pointing the. The problem here is that this score
+will be very subjective. Additionally, it may be difficult or even
+impossible for a human to judge from the data whether it was
+produced by a bot. TAT could aid this decision though
+
+Possible solution #2:
+Collect predictions made by the bot on tweets, have a human go
+through the predictions and decide whether to report the user or
+not. Have the user report the users deemed to be likely bots and
+maintain a list of these users. After an X amount of time, check
+on the list of users to see if they have been banned from Twitter.
+We can then record the amount of accounts that have been banned vs.
+the amount of accounts that have not been to gauge the performance
+of TAT. The plus side in this method is that we would have concrete
+verification on whether the account really was a bot or not. The
+problems are that we don't know how long it takes Twitter to detect
+bots, if the user was banned for another reason or if our report
+itself caused the ban (perhaps unjustifiably). The last problem
+could be avoided by not reporting the user, though this sort of
+runs against the purpose of TAT.
+
+Possible solution #3.
+Scrap trying to figure out an estimation of true success in
+detecting bots and focus on more subjective measures. For example,
+gauge how satisfied users of TAT are with the tweets/users TAT is
+pointing them towards. This would mean focusing more on the
+"Explainable AI" aspect of the project, giving the user as much
+information as possible of the tweet and why it might be a bot.
+
+------------------------------------------------------------------
