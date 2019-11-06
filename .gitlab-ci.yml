@@ -5,7 +5,7 @@ stages:
   - lint
   - test
 
-*python: &python
+.python: &python
   before_script:
     - python3 -m venv env
     - source env/bin/activate
@@ -14,23 +14,24 @@ stages:
     - pipenv install --dev
   only:
     changes:
-      - *.py
+      - "*.py"
 
 black:
   <<: *python
   stage: lint
   script:
-    - black --check **/*.py
+    - black --check **/*.py *.py
 
 pylint:
   <<: *python
   stage: lint
   allow_failure: true
   script:
-    - pylint **/*.py
+    - pylint **/*.py *.py
 
 test:
   <<: *python
   stage: test
+  allow_failure: true
   script:
     - python Hello_World.py
