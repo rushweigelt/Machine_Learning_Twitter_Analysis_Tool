@@ -10,6 +10,7 @@ from sklearn.model_selection import cross_validate
 from pathlib import Path
 import csv
 import os
+import sys
 #Data file names. Files must be csvs and located in the 'data' folder
 bot_data_file_name = 'chinaBotsUnlabelled_counted_StandardizedFieldnames.csv'
 genuine_data_file_name = 'genuineUnlabelled_modified_StandardizedFieldnames.csv'
@@ -19,15 +20,14 @@ entryLimit = 25000
 parentDirectory = os.path.abspath(os.path.join(os.getcwd(), "../../../"))
 data_folder = os.path.join(parentDirectory, "data", "preprocessed", "combineAndLabel")
 bot_data = os.path.join(data_folder, bot_data_file_name)
-genuine_data = os.path.join(data_folder, bot_data_file_name)
+genuine_data = os.path.join(data_folder, genuine_data_file_name)
 out_folder = os.path.join(parentDirectory, "data")
 #out_path = os.path.splitext(bot_data)[0] + "Combined_with_" + os.path.splitext(genuine_data)[0] + ".csv"
 
-#Change this if we must count URLs and
-path_for_counting = bot_data
-
-def CombineAndLabelLimited():
+def CombineAndLabelLimited(botDataName, genuineDataName):
     out_path = os.path.join(out_folder, "Combined_"+ bot_data_file_name[:-4] + "_AND_" + genuine_data_file_name[:-4] + "_" + str(entryLimit) + ".csv")
+    bot_data = os.path.join(data_folder, botDataName)
+    genuine_data = os.path.join(data_folder, genuineDataName)
     combined_headers = ['tweetid', 'userid', 'tweet', 'reply_count', 'retweet_count', 'hashtag_count', 'url_count', "mention_count", 'label']
     with open(out_path, 'w', encoding='latin-1', newline='') as combined_file:
         csv_writer = csv.DictWriter(combined_file, fieldnames=combined_headers)
@@ -63,7 +63,10 @@ def CombineAndLabelLimited():
 
 
 def main():
-    CombineAndLabelLimited()
+    if len(sys.argv) < 3:
+        CombineAndLabelLimited(bot_data, genuine_data)
+    else:
+        CombineAndLabelLimited(sys.argv[1], sys.argv[2])
 
 if __name__ == "__main__":
     main()
