@@ -24,7 +24,7 @@ import sys
 #Data file names. Files must be csvs and located in the 'data' folder
 bot_data_file_name = 'chinaBotsUnlabelled_counted_StandardizedFieldnames.csv'
 genuine_data_file_name = 'genuineUnlabelled_StandardizedFieldnames.csv'
-entryLimit = 25000
+entryLimit = 100000
 
 #creating directory locations for applicable places in dir
 parentDirectory = os.path.abspath(os.path.join(os.getcwd(), "../../../"))
