@@ -1,7 +1,10 @@
 '''
-Script will then swap incorrect fieldnames for our standardized ones.
-
 by Rush Weigelt
+11.4.19
+
+Preprocessing Step #2
+
+Script will then swap incorrect fieldnames for our standardized ones. It concerns itself with Tweet-Only data (as opposed to Tweet & User)
 
 Script can be run in two ways:
 1) Commmand Line: argument 1 = filename.csv (must be in data>preprocessed>standardizeFieldnames folder) argument 2 =list,of,incorrect,fieldnames,in,proper,order,listed,below
@@ -12,18 +15,19 @@ order:
 tweetid, userid, follower_count, following_count, account_date, user_description, text, reply_count, like_count, retweet_count
 hashtag_count, mention_count, url_count
 
-Preprocessing Step #2
+NOTE: data file must be located at data > preprocess > standardizeFieldnames
+Output file will be in data > preprocess > combineAndLabel
 '''
-
-from pathlib import Path
 import csv
 import pandas as pd
 import os
 import sys
 
+#hold the parent directory so we can navigate
 parentDirectory = os.path.abspath(os.path.join(os.getcwd(), "../../../"))
 
 #filename for file we want to augment. Only used if file is called without command line arugments
+#CHANGE HERE
 dp = "genuineUnlabelled.csv"
 
 #INCORRECT VALUES
@@ -60,14 +64,13 @@ correct_list = [tweetid_correct, userid_correct, tweet_text_correct, reply_count
                 retweet_count_correct,
                 hashtag_count_correct, mention_count_correct, url_count_correct]
 
-
+#Standardize the order and spelling of all our fieldnames.
 def StandardizeFields(filename, list_of_incorrect_fieldnames_in_proper_order):
     # path variables
     data_folder = os.path.join(parentDirectory, "data", "preprocessed", "standardizeFieldnames")
     # append give filename to path
     data_path = os.path.join(data_folder, filename)
     out_folder = os.path.join(parentDirectory, "data", "preprocessed", "combineAndLabel")
-    # print(data_path)
     # output file name just adds _modified to original title
     out_path = os.path.join(out_folder, filename[:-4] + "_StandardizedFieldnames.csv")
     #get wrong list from func call
@@ -93,7 +96,6 @@ def StandardizeFields(filename, list_of_incorrect_fieldnames_in_proper_order):
         write_file.close()
 
 
-
 #For main, if arguments are detected try using those, otherwise run with the global vars at the top
 def main(*argv):
     if len(sys.argv) >= 3:
@@ -104,9 +106,6 @@ def main(*argv):
         StandardizeFields(p, generic_wrong_list)
     else:
         StandardizeFields(dp, generic_wrong_list)
-
-
-
 
 if __name__ == "__main__":
     main()

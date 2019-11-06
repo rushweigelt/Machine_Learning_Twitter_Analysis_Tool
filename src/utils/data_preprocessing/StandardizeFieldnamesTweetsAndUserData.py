@@ -1,7 +1,11 @@
 '''
-Script will then swap incorrect fieldnames for our standardized ones.
-
 by Rush Weigelt
+11.4.19
+
+Preprocessing Step #2
+
+Script will then swap incorrect fieldnames for our standardized ones.
+This concerns data from both the tweet and the user.
 
 Script can be run in two ways:
 1) Commmand Line: argument 1 = filename.csv (must be in data>preprocessed>standardizeFieldnames folder) argument 2 =list,of,incorrect,fieldnames,in,proper,order,listed,below
@@ -12,10 +16,10 @@ order:
 tweetid, userid, follower_count, following_count, account_date, user_description, text, reply_count, like_count, retweet_count
 hashtag_count, mention_count, url_count
 
-Preprocessing Step #2
+NOTE: data file must be located at data > preprocess > standardizeFieldnames
+Output file will be in data > preprocess > combineAndLabel
 '''
 
-from pathlib import Path
 import csv
 import pandas as pd
 import os
@@ -24,6 +28,7 @@ import sys
 parentDirectory = os.path.abspath(os.path.join(os.getcwd(), "../../../"))
 
 #filename for file we want to augment. Only used if file is called without command line arugments
+#CHANGE HERE
 dp = "chinaBotsUnlabelled_counted.csv"
 
 #INCORRECT VALUES
@@ -49,6 +54,7 @@ generic_wrong_list = [tweetid_wrong, userid_wrong, follower_count_wrong, followi
                   retweet_count_wrong, hashtag_count_wrong, mention_count_wrong, url_count_wrong]
 
 
+
 # Correct Values, DO NOT CHANGE
 tweetid_correct = 'tweetid'
 userid_correct = 'userid'
@@ -72,6 +78,7 @@ correct_list = [tweetid_correct, userid_correct, follower_count_correct, followi
                 hashtag_count_correct, mention_count_correct, url_count_correct]
 
 
+#Standardize order and spelling of fieldnames.
 def StandardizeFields(filename, list_of_incorrect_fieldnames_in_proper_order):
     # path variables
     data_folder = os.path.join(parentDirectory, "data", "preprocessed", "standardizeFieldnames")
@@ -103,8 +110,6 @@ def StandardizeFields(filename, list_of_incorrect_fieldnames_in_proper_order):
         read_file.close()
         write_file.close()
 
-
-
 #For main, if arguments are detected try using those, otherwise run with the global vars at the top
 def main(*argv):
     if len(sys.argv) >= 3:
@@ -115,9 +120,6 @@ def main(*argv):
         StandardizeFields(p, generic_wrong_list)
     else:
         StandardizeFields(dp, generic_wrong_list)
-
-
-
 
 if __name__ == "__main__":
     main()

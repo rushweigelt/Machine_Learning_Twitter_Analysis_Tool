@@ -3,6 +3,16 @@ Rush Weigelt
 11.4.19
 
 Preprocessing Step #3
+
+This script exists the combine and label two different, unlabelled dataset to create a training dataset for
+regression models.
+
+It can be run in two ways.
+1) Edit script directly and run without arguments                       RUN: python3 CombineAndLabel.py
+2) Run on command line with two arguments: botfile.csv, genuine.csv     RUN: python3 CombineAndLabel.py bot.csv human.csv
+
+NOTE: Combine files must be located at data > preprocess > combineAndLabel
+output file located in 'data' directory
 '''
 
 from sklearn.linear_model import LogisticRegression
