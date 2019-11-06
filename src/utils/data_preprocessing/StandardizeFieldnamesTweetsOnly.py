@@ -91,6 +91,7 @@ def StandardizeFields(filename, list_of_incorrect_fieldnames_in_proper_order):
             next(reader, None)
             for row in reader:
                 csv_writer.writerow(row)
+        print("Finished.\nData File is in data > preprocess > combineAndLabel")
         # close files
         read_file.close()
         write_file.close()
