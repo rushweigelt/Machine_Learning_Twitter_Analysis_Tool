@@ -9,13 +9,16 @@ def validated(retrieve_func):
     def retrieve(*args, data_format=None, **kwargs):
         dataset = retrieve_func(*args, **kwargs)
         if not dataset:
-            raise DataError(f'Dataset is empty.')
+            raise DataError(f"Dataset is empty.")
         elif format:
             for data in dataset:
                 if get_format(data) != data_format:
                     s = pformat(data_format)
-                    raise DataError(f'Retrieved dataset does not have the expected format:\n{s}')
+                    raise DataError(
+                        f"Retrieved dataset does not have the expected format:\n{s}"
+                    )
         return dataset
+
     return retrieve
 
 

@@ -12,8 +12,8 @@ class ModelRanking:
 
     def score(self, X, y):
         if not self.is_fit:
-            raise RuntimeError('Tried to score models before fitting to training data')
-        scores_and_models = [];
+            raise RuntimeError("Tried to score models before fitting to training data")
+        scores_and_models = []
         for (preprocessing, models) in self.pipelines:
             transformed_X = preprocessing.transform(X)
             for model in models:
