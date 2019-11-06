@@ -17,6 +17,7 @@ genuine_data_file_name = 'genuineUnlabelled_modified_StandardizedFieldnames.csv'
 #creating directory locations for applicable places in dir
 parentDirectory = os.path.abspath(os.path.join(os.getcwd(), "../../../"))
 data_folder = os.path.join(parentDirectory, "data", "preprocessed", "combineAndLabel")
+out_folder = os.path.join(parentDirectory, "data")
 bot_data = os.path.join(data_folder, bot_data_file_name)
 genuine_data = os.path.join(data_folder, bot_data_file_name)
 #out_path = os.path.splitext(bot_data)[0] + "Combined_with_" + os.path.splitext(genuine_data)[0] + ".csv"
@@ -25,7 +26,7 @@ genuine_data = os.path.join(data_folder, bot_data_file_name)
 path_for_counting = bot_data
 
 def CombineAndLabel():
-    out_path = os.path.splitext(bot_data)[0] + "Combined.csv"
+    out_path = "Combined_" + os.path.join(out_folder,bot_data_file_name[:-4] + "_AND_" + genuine_data_file_name[:-4]+".csv")
     combined_headers = ['tweetid', 'userid', 'tweet', 'reply_count', 'retweet_count', 'hashtag_count', 'url_count', "mention_count", 'label']
     with open(out_path, 'w', encoding='latin-1', newline='') as combined_file:
         csv_writer = csv.DictWriter(combined_file, fieldnames=combined_headers)
