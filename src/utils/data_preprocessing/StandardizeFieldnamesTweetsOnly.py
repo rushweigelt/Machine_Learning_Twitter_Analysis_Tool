@@ -28,7 +28,7 @@ parentDirectory = os.path.abspath(os.path.join(os.getcwd(), "../../../"))
 
 #filename for file we want to augment. Only used if file is called without command line arugments
 #CHANGE HERE
-dp = "genuineUnlabelled.csv"
+dp = "english_fake_followers.csv"
 
 #INCORRECT VALUES
 #ONLY USED IF SCRIPT RUNS WITHOUT ARGUMENTS

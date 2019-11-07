@@ -22,7 +22,7 @@ import csv
 import os
 import sys
 #Data file names. Files must be csvs and located in the 'data' folder
-bot_data_file_name = 'chinaBotsUnlabelled_counted_StandardizedFieldnames.csv'
+bot_data_file_name = 'english_fake_followers_StandardizedFieldnames.csv'
 genuine_data_file_name = 'genuineUnlabelled_StandardizedFieldnames.csv'
 entryLimit = 100000
 
