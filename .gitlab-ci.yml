@@ -3,7 +3,6 @@ default:
 
 stages:
   - lint
-  - test
 
 .python: &python
   before_script:
@@ -28,10 +27,3 @@ pylint:
   allow_failure: true
   script:
     - pylint **/*.py *.py
-
-test:
-  <<: *python
-  stage: test
-  allow_failure: true
-  script:
-    - python main.py
