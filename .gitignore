@@ -2,10 +2,14 @@
 *.pyc
 env/
 
+# MLFlow
+mlruns/
+
 # IDE Config
 .idea/
 .vscode/
 
+# Datasets
 src/utils/data_management/test.go
 data/preprocessed/chinaBotsUnlabelled.csv
 data/preprocessed/combineAndLabel/chinaBotsUnlabelled_counted_StandardizedFieldnames.csv

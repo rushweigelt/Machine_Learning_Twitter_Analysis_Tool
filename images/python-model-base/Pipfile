@@ -12,7 +12,6 @@ rope = "*"
 numpy = "*"
 pandas = "*"
 scikit-learn = "*"
-mlflow = "*"
 
 [requires]
 python_version = "3.7"
