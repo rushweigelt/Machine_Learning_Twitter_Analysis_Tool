@@ -261,14 +261,6 @@
             ],
             "version": "==3.10.0"
         },
-        "pypiwin32": {
-            "hashes": [
-                "sha256:67adf399debc1d5d14dffc1ab5acacb800da569754fafdc576b2a039485aa775",
-                "sha256:71be40c1fbd28594214ecaecb58e7aa8b708eabfa0125c8a109ebd51edbd776a"
-            ],
-            "markers": "sys_platform == 'win32' and python_version >= '3.6'",
-            "version": "==223"
-        },
         "python-dateutil": {
             "hashes": [
                 "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c",
@@ -290,23 +282,6 @@
                 "sha256:b02c06db6cf09c12dd25137e563b31700d3b80fcc4ad23abb7a315f2789819be"
             ],
             "version": "==2019.3"
-        },
-        "pywin32": {
-            "hashes": [
-                "sha256:0728f8b5bca4a2e6638430d18f5a4143d4a9120491aa8c1b5bd1ccba45543256",
-                "sha256:10963cecd709b4ade5cc17c69ab2b6f8be7928704ead88ce80a0314f16f79ccb",
-                "sha256:275075aab5faa8b095b616cb7f7bf8c862a2188f35a545c864edaa7cd3a59499",
-                "sha256:4d6b633f17bcad3804de112ab3918fd5c7f4cf1c374017d00f5d25779af22951",
-                "sha256:77f78fe8bad3c12e6453637cf19577c6eec49a85073205bf4a8bda0d9a2330bc",
-                "sha256:9a96fc015e6c0904593259873378d078e8bade404aae84f63d1aec0d5ea23404",
-                "sha256:9d5572ff1222e1cf7de9ad5a0602c86029e9784ba79f5bd231beaed4a99aed4a",
-                "sha256:b3023540e2802c970be07cb097b65464417298849b17d1ebbb52e4628ea3afc3",
-                "sha256:c32a0a0fc6cf1026b7a854b3be01a6d963976f59a83bb70778f2f7b4be99c53b",
-                "sha256:d82bd01d85a8bf3cc23f66a1825742ff513ca0ce09b75b5caeb40c095d885fdd",
-                "sha256:edd3ea26ef4113160b996789727e4c641618de2bcc0c542d1fdc9f64272bc8b2",
-                "sha256:f0da6892cfef5d2f006b0cbd7df396e456d06e1d664f0633f50741a3b6f86430"
-            ],
-            "version": "==226"
         },
         "pyyaml": {
             "hashes": [
@@ -503,14 +478,6 @@
             ],
             "version": "==7.0"
         },
-        "colorama": {
-            "hashes": [
-                "sha256:05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d",
-                "sha256:f8ac84de7840f5b9c4e3347b3c1eaa50f7e49c2b07596221daec5edaabbd7c48"
-            ],
-            "markers": "sys_platform == 'win32'",
-            "version": "==0.4.1"
-        },
         "isort": {
             "hashes": [
                 "sha256:54da7e92468955c4fceacd0c86bd0ec997b0e1ee80d97f67c35a78b719dccab1",
@@ -634,7 +601,8 @@
         },
         "wrapt": {
             "hashes": [
-                "sha256:565a021fd19419476b9362b05eeaa094178de64f8361e44468f9e9d7843901e1"
+                "sha256:565a021fd19419476b9362b05eeaa094178de64f8361e44468f9e9d7843901e1",
+                "sha256:977981c5745df077ac1e7dc45c44674a0fd1ea5f49bd6de04888ec4bd764f7ca"
             ],
             "version": "==1.11.2"
         }

@@ -1,8 +1,0 @@
-name: Gaussian Naive Bayes
-
-docker_env:
-    image: python-model-base
-
-entry_points:
-    main:
-        command: "pipenv run python GaussianNBModel.py"
