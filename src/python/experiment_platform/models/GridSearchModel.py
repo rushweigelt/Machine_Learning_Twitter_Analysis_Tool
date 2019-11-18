@@ -1,30 +1,26 @@
 import mlflow
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, cross_validate
 
-from .SklearnModel import SklearnModel
+from .SklearnModel import SklearnModel, SCORING_FUNCS
 
-class GridSearchModel(SklearnModel):
-    def __init__(self, child_model=None, param_grid=None):
-        self.child_model = self.create_child_model(child_model)
-        self.model = GridSearchCV(self.child_model, param_grid, cv=5)
-        self.params = self.get_params()
-    
-    def create_child_model(self, child_model):
-        class GridSearchChildModel(child_model):
-            def __init__(self, **kwargs):
-                self.model = child_model(**kwargs)
-                self.active_run = None
 
-            def fit(self, X, y):
-                self.active_run = mlflow.start_run(nested=True)
-                mlflow.set_tag('model', child_model.__name__)
-                mlflow.log_params(self.get_params())
-                super().fit(X, y)
-            
-            def score(self, X, y):
-                metrics = self.scores(X, y)
-                mlflow.log_metrics(metrics)
-                mlflow.end_run()
-                return metrics['precision']
+class SklearnGridSearchCV(SklearnModel):
+    def __init__(self, model, param_grid, name):
+        self.child_model = model
+        self.model = GridSearchCV(
+            self.child_model, param_grid, scoring=SCORING_FUNCS, refit="precision", cv=3
+        )
+        self.name = name
 
-        return GridSearchChildModel()
+    def scores(self, X, y):
+        self.model.fit(X, y)
+        scores = cross_validate(
+            self.model.best_estimator_, X, y, scoring=SCORING_FUNCS, cv=3
+        )
+        scores = {key: score.mean() for key, score in scores.items()}
+        params = {
+            f"best_param_{key}": val
+            for key, val in self.model.best_estimator_.get_params().items()
+        }
+        mlflow.log_params(params)
+        return scores
