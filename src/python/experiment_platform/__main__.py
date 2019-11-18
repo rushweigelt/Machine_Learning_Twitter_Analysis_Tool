@@ -1,7 +1,7 @@
 import mlflow
 from time import time
 
-from experiment_platform.datasets import MockDataset
+from experiment_platform.datasets import CSVDataset
 from experiment_platform.models import custom_models
 
 
@@ -10,7 +10,7 @@ def run_all_models():
 
 
 def run_models(models):
-    dataset = MockDataset()
+    dataset = CSVDataset(path='/home/pbs44/Twitter-Analysis-Tool/data/Combined_EnglishFakeFollowersAndGenuine_small.csv')
     mlflow.set_experiment(dataset.name)
     for model in models:
         with mlflow.start_run(run_name=f"{model.name} {time()}"):
