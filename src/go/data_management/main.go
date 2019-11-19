@@ -1,11 +1,14 @@
-package data_management
+package main
 
 import (
 	"context"
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
-	"go.mongodb.org/mongo-driver/bson"
+	"io/ioutil"
+	"strings"
+
+	//"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
@@ -18,11 +21,70 @@ const CONSUMER_SECRET string = ""
 const ACCESS_TOKEN string = ""
 const ACCESS_SECRET string = ""
 
+const HASHTAGFILE = "Hashtags"
+const USERFILE = "Users"
+
 // TODO: Create routine for grabbing historical tweets by hashtag
 // TODO: Setup and teardown code for Mongo/Twitter API calls
 // TODO: Mongo Emission info
-
 // TODO: STRETCH routine for grabbing realtime data by hashtag
+
+func getQueryParams(queryFile string) *[]string {
+	file, err := os.Open(queryFile)
+	if err != nil {
+		log.Fatal("No query file found")
+	}
+	text, err := ioutil.ReadAll(file)
+	textString := string(text)
+	queryList := strings.Split(textString, "\n")
+	return &queryList
+}
+
+func PushTweetsToMongo(mongoClient *mongo.Client, database string, collectionName string, tweets *[]twitter.Tweet) {
+	total := 0
+	collection := mongoClient.Database(database).Collection(collectionName)
+	for _, tweet := range *tweets {
+		result, err := collection.InsertOne(context.TODO(), tweet)
+		if err != nil {
+			log.Fatal(err)
+		}
+		total += 1
+		_ = result
+	}
+	log.Printf("Pushed %v tweets to databse %s with collection %s ", total, database, collectionName)
+	return
+}
+
+func queryTwitterSearch(twitterClient *twitter.Client, queryString string) *[]twitter.Tweet {
+	search, resp, err := twitterClient.Search.Tweets(&twitter.SearchTweetParams{Query: queryString, Count: 100})
+	if err != nil {
+		log.Fatal(err)
+	}
+	if resp.StatusCode == 200 {
+		log.Println("Got back a positive response from twitter")
+		return &search.Statuses
+	} else {
+		log.Fatal("Bad Status Code from Twitter")
+	}
+	return nil
+}
+
+func queryTwitterUser(twitterClient *twitter.Client, user string) *[]twitter.Tweet {
+	var userParams = twitter.UserTimelineParams{
+		ScreenName: user,
+		Count:      100,
+	}
+
+	returnedTimeline, resp, err := twitterClient.Timelines.UserTimeline(&userParams)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if resp.StatusCode != 200 {
+		log.Fatal(resp)
+	}
+	return &returnedTimeline
+}
 
 func main() {
 	// Create and connect to our mongo instance
@@ -41,19 +103,32 @@ func main() {
 	}
 	fmt.Println("MongoDB is up, connecting to Twitter ")
 
-	twitter_config := oauth1.NewConfig(CONSUMER_KEY, CONSUMER_SECRET)
-	twitter_token := oauth1.NewToken(ACCESS_TOKEN, ACCESS_SECRET)
-	http_client := twitter_config.Client(oauth1.NoContext, twitter_token)
+	twitterConfig := oauth1.NewConfig(CONSUMER_KEY, CONSUMER_SECRET)
+	twitterToken := oauth1.NewToken(ACCESS_TOKEN, ACCESS_SECRET)
+	httpClient := twitterConfig.Client(oauth1.NoContext, twitterToken)
 
-	twitter_client := twitter.NewClient(http_client)
+	twitterClient := twitter.NewClient(httpClient)
 
 	// Get the hashtags we need
-	// TODO: Get from file
-	hashtags := os.Args[1:]
-	for _, hashtag := range hashtags {
+	hashtags := getQueryParams(HASHTAGFILE)
+	users := getQueryParams(USERFILE)
+
+	for _, hashtag := range *hashtags {
+		if hashtag == "" {
+			log.Println("WARN: Empty string found, breaking")
+			break
+		}
+		log.Println("sending twitter a request for " + hashtag)
 		// Pull info from twitter with query as hashtag
-		// If successful
-		// Create hashtag collection if it doesn't exist
-		collection := mongo_client.Database("Hashtags").Collection(hashtag)
+		PushTweetsToMongo(mongo_client, "Hashtags", hashtag, queryTwitterSearch(twitterClient, "#"+hashtag))
 	}
+
+	for _, user := range *users {
+		if user == "" {
+			log.Println("WARN: Empty string found")
+		}
+		// Grab user's tweets, push them to mongo
+		PushTweetsToMongo(mongo_client, "Users", user, queryTwitterUser(twitterClient, user))
+	}
+
 }
