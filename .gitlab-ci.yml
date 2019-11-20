@@ -1,0 +1,37 @@
+default:
+  image: python:3.7
+
+stages:
+  - lint
+  - test
+
+.python: &python
+  before_script:
+    - python3 -m venv env
+    - source env/bin/activate
+    - pip install pipenv
+    - cd src/python
+    - pipenv install --dev
+  only:
+    changes:
+      - src/python/*
+
+black:
+  <<: *python
+  stage: lint
+  script:
+    - black --check **/*.py *.py
+
+pylint:
+  <<: *python
+  stage: lint
+  allow_failure: true
+  script:
+    - pylint **/*.py *.py
+
+test:
+  <<: *python
+  stage: test
+  allow_failure: true
+  script:
+    - python main.py
