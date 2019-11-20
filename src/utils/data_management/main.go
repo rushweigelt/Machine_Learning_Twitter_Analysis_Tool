@@ -1,3 +1,14 @@
+/*
+Data Management is a package for large scale interactions with the Twitter API for TAT
+Its main features are:
+	- Data retrieval from Twitter with arbitrary parameters
+	- Pushing Data to the locally hosted Mongo DB
+	- Normalizing collected data
+
+Potential features are:
+ 	- Arbitrary data normalization
+ */
+
 package main
 
 import (
@@ -15,11 +26,11 @@ import (
 	"os"
 )
 
-// TODO: Get from a config or Docker Env var
-const CONSUMER_KEY string = ""
-const CONSUMER_SECRET string = ""
-const ACCESS_TOKEN string = ""
-const ACCESS_SECRET string = ""
+// TODO: Get from a config or Docker Env var, DO NOT COMMIT THIS
+const CONSUMER_KEY string = "XLuTfzcgjUtlZs4dzGM3W2tq6"
+const CONSUMER_SECRET string = "FfTFPxwhiI97wuy9TOe6Lq8Sgl8phJRFQNaukQbEXg6oblyuzJ"
+const ACCESS_TOKEN string = "1179141952794583042-IPNL6nE2SdzZnG26p3Ld5TgpBSNfA9"
+const ACCESS_SECRET string = "ptuUKpOGbUZIg8alVapQdXg3ibPdoBMwGT5LBDW4DRcgK"
 
 const HASHTAGFILE = "Hashtags"
 const USERFILE = "Users"
@@ -56,7 +67,11 @@ func PushTweetsToMongo(mongoClient *mongo.Client, database string, collectionNam
 }
 
 func queryTwitterSearch(twitterClient *twitter.Client, queryString string) *[]twitter.Tweet {
-	search, resp, err := twitterClient.Search.Tweets(&twitter.SearchTweetParams{Query: queryString, Count: 100})
+	search, resp, err := twitterClient.Search.Tweets(&twitter.SearchTweetParams{
+		Query: queryString,
+		Count: 100,
+		TweetMode: "extended",
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -72,7 +87,8 @@ func queryTwitterSearch(twitterClient *twitter.Client, queryString string) *[]tw
 func queryTwitterUser(twitterClient *twitter.Client, user string) *[]twitter.Tweet {
 	var userParams = twitter.UserTimelineParams{
 		ScreenName: user,
-		Count:      100,
+		Count:      200,
+		TweetMode: "extended",
 	}
 
 	returnedTimeline, resp, err := twitterClient.Timelines.UserTimeline(&userParams)
