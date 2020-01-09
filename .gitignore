@@ -20,3 +20,6 @@ data/preprocessed/standardizeFieldnames/genuineUnlabelled.csv
 data/tweetsGenuineUnlabelled.csv
 data/chinaBotsLabelled.csv
 data/preprocessed/count/genuineUnlabelled.csv
+*.csv
+data/lstmLog/combined_multi_bot_and_genuine_800.0k_split.log
+data/lstmLog/combined_multi_bot_and_genuine_200k_split.log
