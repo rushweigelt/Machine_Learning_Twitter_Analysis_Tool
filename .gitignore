@@ -20,3 +20,4 @@ data/preprocessed/standardizeFieldnames/genuineUnlabelled.csv
 data/tweetsGenuineUnlabelled.csv
 data/chinaBotsLabelled.csv
 data/preprocessed/count/genuineUnlabelled.csv
+*.csv

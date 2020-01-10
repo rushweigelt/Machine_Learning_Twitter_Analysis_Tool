@@ -19,7 +19,7 @@ import sys
 
 #Data file names. Files must be csvs and located in the 'data' folder
 #CHANGE IF RUNNING SCRIPT ALONE
-filename = 'chinaBotsUnlabelled.csv'
+filename = 'iran_tweets.csv'
 #Fieldnames for what we'll be enumerating
 #MUST CHANGE TO RUN WITH SPECIFIC CSV FILES
 urls = 'urls'
@@ -44,9 +44,9 @@ def CountListedData(file_name):
         csv_reader = csv.reader(csv_file)
         headers = csv_reader.__next__()
         #append our new fieldnames: num_hashtags, num_urls, label
-        headers.append('num_hashtags')
-        headers.append('num_urls')
-        headers.append('num_mentions')
+        headers.append('hashtag_count')
+        headers.append('url_count')
+        headers.append('mention_count')
         csv_file.close()
     #Open a reader and writer, add columns for our enumeration columns we just created
     with open(out_path, 'w', encoding='latin-1', newline='') as csv_file2:
@@ -91,9 +91,9 @@ def CountListedData(file_name):
                     else:
                         num_mentions = comma_count + 1
                 #append new columns to csv
-                row['num_urls'] = num_url
-                row['num_hashtags'] = num_hts
-                row['num_mentions'] = num_mentions
+                row['url_count'] = num_url
+                row['hashtag_count'] = num_hts
+                row['mention_count'] = num_mentions
                 csv_writer.writerow(row)
     print("Done Creating New Counted Datafile.\nNew file is in data > preprocessed > standardizeFieldnames")
     csv_file.close()
