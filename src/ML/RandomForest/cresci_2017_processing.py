@@ -1,3 +1,10 @@
+"""
+Script for converting the Cresci-2017 datasets to our standardized
+format and importing it to other scripts
+
+"""
+
+
 import pandas as pd
 
 CRESCI_TWEET_COLS = ['user_id', 'retweet_count', 'reply_count', 'favorite_count', 'num_hashtags', 'num_urls', 'num_mentions']
@@ -17,7 +24,8 @@ CRESCI_TWEET_COL_MAPPING = {'user_id':'userid',
                             'num_urls':'url_count',
                             'num_mentions':'mention_count'}
 
-CRESCI_TWEET_DTYPES = {'id':float,
+CRESCI_TWEET_DTYPES = {'id': str,
+                       'user_id': str,
                             #'tweet_text':'tweet_text',
                             'retweet_count':float,
                             'favorite_count':float,
@@ -26,7 +34,7 @@ CRESCI_TWEET_DTYPES = {'id':float,
                             'num_urls':float,
                             'num_mentions':float}
 
-CRESCI_USER_DTYPES = {'id':float,
+CRESCI_USER_DTYPES = {'id': str,
                       'followers_count': float,
                       'friends_count': float}
 
