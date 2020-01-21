@@ -28,7 +28,7 @@ bot_data_file_name3 = 'ira_tweets.csv'
 bot_data_file_name4 = 'iran_tweets.csv'
 bot_files_names = [bot_data_file_name, bot_data_file_name2, bot_data_file_name3, bot_data_file_name4]
 genuine_data_file_name = 'genuine_accounts_processed.csv'
-entryLimit = 1800000
+entryLimit = 150000
 botLimit = int(entryLimit/4)
 
 #creating directory locations for applicable places in dir
