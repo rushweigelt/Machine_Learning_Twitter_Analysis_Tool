@@ -1,0 +1,10 @@
+Fold 0 class distribution: 0.55 bots, 0.45 humans
+Fold 1 class distribution: 0.53 bots, 0.47 humans
+Fold 2 class distribution: 0.46 bots, 0.54 humans
+Fold 3 class distribution: 0.52 bots, 0.48 humans
+Fold 4 class distribution: 0.43 bots, 0.57 humans
+Test fold 0 score: 0.9135947140295642
+Test fold 1 score: 0.8485102202574322
+Test fold 2 score: 0.41281489452735026
+Test fold 3 score: 0.8096628148037966
+Test fold 4 score: 0.4188356800117006
