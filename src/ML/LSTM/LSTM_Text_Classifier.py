@@ -22,6 +22,7 @@ from pathlib import Path
 from nltk.corpus import stopwords
 import nltk
 import re
+import os
 
 
 
@@ -37,19 +38,20 @@ num_hidden = 32
 num_classes = 2
 dropout = .5
 optimizer = adam(lr=learning_rate)
-filename = 'EnglishBotAndGenuine.csv'
-data_folder = Path("./data")
-data_path = data_folder/filename
-log_folder = Path("./data/lstmLog")
-graph_folder = Path("./data/lstmLog/graphs")
+parentDirectory = os.path.abspath(os.path.join(os.getcwd(), "../../../"))
+data_folder = os.path.join(parentDirectory, "data")
+filename = "combined_multi_bot_and_genuine_800.0k_split.csv"
+data_path = os.path.join(data_folder, filename)
+log_folder = os.path.join(data_folder, "lstmLog")
+graph_folder = os.path.join(log_folder, "graphs")
 report_filename = filename[:-4]+".log"
 
-df = pd.read_csv(data_path, encoding='latin-1', names=['tweet', 'label'], error_bad_lines=False)
+df = pd.read_csv(data_path, encoding='latin-1', names=['text', 'description', 'label'], error_bad_lines=False)
 df = df.dropna()
 df = df.applymap(str)
 labels = df['label'].map(lambda x : 1 if x=='bot' else 0)
-df = df[df.tweet.apply(lambda x: x!="")]
-df = df[df.label.apply(lambda x: x !="")]
+df = df[df.text.apply(lambda x: x!="")]
+df = df[df.description.apply(lambda x: x !="")]
 #print(df.describe())
 #print(df.head)
 ##TAKEN FROM @sabbar
@@ -95,12 +97,12 @@ def clean_text(text):
     return text
 ##end taken from @sabbar
 #apply clean text to our tweet data
-df['tweet'] = df['tweet'].map(lambda x: clean_text(x))
+df['text'] = df['text'].map(lambda x: clean_text(x))
 #limit vocab size, then tokenize as a preprocessing step
 vocab_size = 20000
 tokenizer = Tokenizer(num_words=vocab_size)
-tokenizer.fit_on_texts(df['tweet'])
-sequences = tokenizer.texts_to_sequences(df['tweet'])
+tokenizer.fit_on_texts(df['text'])
+sequences = tokenizer.texts_to_sequences(df['text'])
 data = pad_sequences(sequences, maxlen=50)
 
 #create model, add layers, compile, and fit
@@ -109,9 +111,9 @@ model_lstm.add(Embedding(vocab_size, 100, input_length=50))
 model_lstm.add(LSTM(100, dropout=.2, recurrent_dropout=.2))
 model_lstm.add(Dense(1, activation='sigmoid'))
 model_lstm.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-train_log = log_folder/report_filename
+train_log = os.path.join(log_folder, report_filename)
 csv_logger = CSVLogger(train_log, append=False)
-metrics = model_lstm.fit(data, np.array(labels), verbose=1, validation_split=.4, epochs=3, callbacks=[csv_logger])
+metrics = model_lstm.fit(data, np.array(labels), verbose=1, validation_split=.4, epochs=5, callbacks=[csv_logger])
 
 #post fit stats
 #scores = model_lstm.evaluate()

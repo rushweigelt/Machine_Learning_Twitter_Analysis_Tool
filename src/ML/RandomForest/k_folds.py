@@ -19,10 +19,12 @@ def get_stratified_k_folds(users, labels, n_splits):
 
     users_labels = pd.DataFrame({'userid':users,'bot':labels})
 
-    user_list = np.unique(users_labels.values, axis=0)
+    # Get unique entries by removing duplicates
+    users_labels = users_labels.drop_duplicates()
 
-    user_ids = user_list[:,0]
-    user_labels = user_list[:, 1]
+    user_ids = users_labels.values[:,0]
+    user_labels = users_labels.values[:, 1].astype(int)
+
 
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True)
 
@@ -32,5 +34,8 @@ def get_stratified_k_folds(users, labels, n_splits):
     for train_index, test_index in skf.split(user_ids, user_labels):
         train_folds.append(user_ids[train_index])
         test_folds.append(user_ids[test_index])
+
+        if len(np.intersect1d(user_ids[train_index], user_ids[test_index])) != 0:
+            print("Warning, train and test set not mutually exclusive.", file=sys.stderr)
 
     return train_folds, test_folds
