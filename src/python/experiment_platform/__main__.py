@@ -10,7 +10,7 @@ def run_all_models():
 
 
 def run_models(models):
-    dataset = CSVDataset(path='/home/pbs44/Twitter-Analysis-Tool/data/Combined_EnglishFakeFollowersAndGenuine_small.csv')
+    dataset = CSVDataset(path='/data/data-sets/processed-data/combined/multi_bot_and_genuine_400k_split.csv')
     mlflow.set_experiment(dataset.name)
     for model in models:
         with mlflow.start_run(run_name=f"{model.name} {time()}"):
