@@ -4,8 +4,8 @@ import json
 import pandas as pd
 
 data = []
-tweets_per_pull = 2
-tweet_limit = 4
+tweets_per_pull = 20
+tweet_limit = 50
 
 with open('tat/twitter_credentials.json') as cred_data:
     info = json.load(cred_data)
@@ -42,9 +42,11 @@ def get_all_tweets(hashtag):
     json_str = json.dumps(all_tweet_data[0]._json)
     #deserialise string into py obj
     parsed = json.loads(json_str)
+    #print(tweet.text)
     #print(json.dumps(parsed, indent=4, sort_keys=True))
     formatted_data = [[tweet.user.followers_count, tweet.user.friends_count, tweet.favorite_count,
                        tweet.retweet_count] for tweet in all_tweet_data]
+    print(formatted_data)
     return formatted_data
 
 

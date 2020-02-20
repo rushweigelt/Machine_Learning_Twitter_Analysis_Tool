@@ -7,27 +7,11 @@ Lots of helper functions
 
 #Django imports
 from django.db import models
-#ML imports
-from sklearn.naive_bayes import GaussianNB, BernoulliNB
-from sklearn.model_selection import cross_validate, train_test_split, KFold
-from sklearn.preprocessing import MinMaxScaler
-import pandas as pd
-from sklearn import metrics
-from pymongo import MongoClient
-import numpy as np
-from joblib import load
-from tensorflow.python.keras.initializers import glorot_uniform
-from tensorflow.python.keras.models import load_model, model_from_json
-#from tensorflow.python.keras.models import load_model, model_from_json
-from keras.utils import CustomObjectScope
-import re
-import nltk
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
-from .twitter_scrape import get_all_tweets
+from .ml_models import GaussianNB, LSTMTextClassifier
 '''
 Below are our helper functions. They start with data manipulation, and then move on to model-loading
 PART I. DATA GATHERING, PREPROCESSING
+'''
 '''
 #Hardcoded function to open our client and look at a specific collection to train our model
 #Returns a Pandas Dataframe Object
@@ -128,7 +112,7 @@ def clean_twitter_data_text_analysis(df):
     data = pad_sequences(sequences, maxlen=50)
     return data
 
-'''PART II: LOAD MODEL HELPER FUNCTIONS'''
+#PART II: LOAD MODEL HELPER FUNCTIONS
 #helper function to load a model (mfn = Model File Name)
 def LoadModel(mfn):
     if mfn == 'gaussianNB':
@@ -136,7 +120,8 @@ def LoadModel(mfn):
     elif mfn == 'LSTMText':
         model = load('tat/mlModels/LSTMModel.joblib')
     return model
-
+'''
+'''
 #Function for Gaussian-based Naive Bayes numerical analysis
 #Use this as a template for SKLEARN models
 #They must be trained and then saved using JOBLIB
@@ -155,7 +140,8 @@ def x_GaussianNB(db, collect):
     statement = "Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format(len(predictions), bot_num, round(percent,2))
     print(statement)
     return statement
-
+'''
+'''
 #Function for our LSTM Textual Classifier
 def LSTMTextClassifier(db, collect):
     #Load requested data from database
@@ -186,18 +172,18 @@ def LSTMTextClassifier(db, collect):
         else:
             preds_lst[preds_lst.index(x)] ='bot'
     i = 0
-    '''
-    for x in preds_lst:
-        print("Prediction: {}       Probability: {}".format(x, probs_lst[i]))
-        i + 1
-    '''
+    
+    #for x in preds_lst:
+        #print("Prediction: {}       Probability: {}".format(x, probs_lst[i]))
+        #i + 1
     #Light number cruching for basic report
     bot_num = preds_lst.count('bot')
     percent = bot_num/len(preds_lst)*100
     statement = "Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format(len(preds_lst), bot_num, round(percent, 2))
     print(statement)
     return statement
-
+'''
+'''
 def GaussianNB(hashtag):
     m = LoadModel('gaussianNB')
     x = get_all_tweets(hashtag)
@@ -211,6 +197,10 @@ def GaussianNB(hashtag):
                                                                                         round(percent, 2))
     print(statement)
     return statement
-
+'''
+def run_GaussianNB(hashtag):
+    GaussianNB(hashtag)
 # Create your models here.
+
+
 

@@ -52,11 +52,12 @@ catchall = catchall_dev if settings.DEBUG else catchall_prod
 
 def search(request):
     if request.method == 'POST':
-        user_hashtag = request.POST.get('user_hashtag', None)
+        user_hashtag = request.POST.get('user_hashtag')
         user_model = request.POST.get('user_model', None)
         #print(user_model)
         if user_model == 'nb':
-            html = GaussianNB('NewHampshire')
+            print(user_hashtag)
+            html = GaussianNB(user_hashtag)
         else:
             html = LSTMTextClassifier('Hashtags', user_hashtag)
         print(user_hashtag)
@@ -68,7 +69,7 @@ def index(request):
     template = loader.get_template('tat/index.html')
     user_hashtag = ''
     context = {
-        'usser_hashtag' : user_hashtag,
+        'user_hashtag': user_hashtag,
 
     }
     #return HttpResponse(template.render(context, request))
