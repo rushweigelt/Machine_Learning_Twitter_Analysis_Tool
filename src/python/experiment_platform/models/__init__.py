@@ -8,7 +8,7 @@ from .SklearnModel import SklearnModel
 from .GridSearchModel import SklearnGridSearchCV
 
 
-custom_models = [
+all_models = [
     SklearnModel(model=GaussianNB()),
     SklearnModel(model=KNeighborsClassifier()),
     SklearnModel(model=AdaBoostClassifier()),

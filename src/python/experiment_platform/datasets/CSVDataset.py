@@ -6,9 +6,13 @@ from .BaseDataset import BaseDataset
 class CSVDataset(BaseDataset):
     def __init__(self, path=None,label='label', name=None, types=None, **kwargs):
         self.name = name if name else str(path).split('/')[-1]
+        self.loaded = False
         self.load = lambda:self.__load(path, label, types, **kwargs)
         
     def __load(self, path, label, types, **kwargs):
+        if self.loaded:
+            return
+        self.loaded = True
         df = pd.read_csv(path,dtype=types, **kwargs)
         self.y = df[label]
         self.X = df.drop(label, axis=1)

@@ -54,6 +54,8 @@ deploy:
     - bvm15 # Use our Drexel machine
   stage: deploy
   only:
+    refs:
+      - master
     changes:
       - images/*
       - src/python/experiment_platform/*

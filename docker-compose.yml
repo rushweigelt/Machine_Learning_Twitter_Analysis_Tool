@@ -10,6 +10,7 @@ services:
         image: experiments:latest
         environment:
             - MLFLOW_TRACKING_URI=http://mlflow-server:5000
+            - PYTHONUNBUFFERED=0
         volumes:
             - /data/mlflow:/mlflow
             - /data/data-sets:/data/data-sets
