@@ -6,6 +6,7 @@ verify_ssl = false
 [dev-packages]
 black = "*"
 pylint = "*"
+jupyterlab = "*"
 rope = "*"
 
 [packages]

@@ -4,4 +4,4 @@ EXPOSE 5000
 RUN pip install mlflow==1.6.0
 RUN mkdir /mlflow
 
-CMD mlflow server --backend-store-uri /mlflow --default-artifact-root /mlflow --host 0.0.0.0
+CMD mlflow server --backend-store-uri /mlflow --default-artifact-root /data/mlflow --host 0.0.0.0

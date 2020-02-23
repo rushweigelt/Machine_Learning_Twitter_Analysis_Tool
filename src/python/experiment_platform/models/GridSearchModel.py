@@ -12,10 +12,10 @@ class SklearnGridSearchCV(SklearnModel):
         )
         self.name = name
 
-    def scores(self, X, y):
+    def scores(self, X, y, scoring=SCORING_FUNCS):
         self.model.fit(X, y)
         scores = cross_validate(
-            self.model.best_estimator_, X, y, scoring=SCORING_FUNCS, cv=3
+            self.model.best_estimator_, X, y, scoring=scoring, cv=3
         )
         scores = {key: score.mean() for key, score in scores.items()}
         params = {

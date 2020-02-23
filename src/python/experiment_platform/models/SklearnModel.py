@@ -5,7 +5,6 @@ from .BaseModel import BaseModel
 
 SCORING_FUNCS = ["precision", "roc_auc", "accuracy"]
 
-
 class SklearnModel(BaseModel):
     def __init__(self, model, name=None):
         self.model = model
@@ -20,13 +19,13 @@ class SklearnModel(BaseModel):
     def score(self, X, y):
         return self.model.score(X, y)
 
-    def scores(self, X, y):
-        raw_scores = cross_validate(self.model, X, y, scoring=SCORING_FUNCS, cv=5)
+    def scores(self, X, y, scoring=SCORING_FUNCS):
+        raw_scores = cross_validate(self.model, X, y, scoring=scoring, cv=5)
         scores = {key: score.mean() for key, score in raw_scores.items()}
         return scores
 
-    def save(self, uri):
-        mlflow.sklearn.log_model(self.model, artifact_path=uri)
+    def save(self, **kwargs):
+        mlflow.sklearn.log_model(self.model, **kwargs)
 
     def get_params(self, deep=True):
         return self.model.get_params()

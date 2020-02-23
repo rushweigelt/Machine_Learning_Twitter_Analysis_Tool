@@ -13,7 +13,6 @@ custom_models = [
     SklearnModel(model=KNeighborsClassifier()),
     SklearnModel(model=AdaBoostClassifier()),
     SklearnModel(model=RandomForestClassifier()),
-    SklearnModel(model=SVC()),
     SklearnGridSearchCV(
         model=KNeighborsClassifier(),
         param_grid={"n_neighbors": range(2, 10)},
@@ -31,14 +30,5 @@ custom_models = [
             "learning_rate": [0.1, 0.5, 0.75, 1],
         },
         name="GridSearchAdaBoost",
-    ),
-    SklearnGridSearchCV(
-        model=SVC(),
-        param_grid={
-            "C": [0.2, 0.4, 0.6, 0.8, 1.0, 1.2],
-            "kernel": ["linear", "poly", "rbf"],
-            "gamma": ["auto", "scale"],
-        },
-        name="GridSearchSVC",
     ),
 ]
