@@ -1,7 +1,3 @@
-default:
-  tags:
-    - bvm15 # Use our Drexel machine
-
 stages:
   - build
   - test
@@ -10,6 +6,8 @@ stages:
 
 
 mlflow-server:build:
+  tags:
+    - bvm15 # Use our Drexel machine
   stage: build
   only:
     changes:
@@ -17,6 +15,8 @@ mlflow-server:build:
   script: docker build -t mlflow-server:$CI_COMMIT_REF_SLUG -f ./images/mlflow.Dockerfile ./images
 
 mlflow-server:publish:
+  tags:
+    - bvm15 # Use our Drexel machine
   stage: publish
   only:
     refs:
@@ -27,6 +27,8 @@ mlflow-server:publish:
 
 
 experiments:build:
+  tags:
+    - bvm15 # Use our Drexel machine
   stage: build
   only:
     changes:
@@ -34,8 +36,9 @@ experiments:build:
       - src/python/experiment_platform/*
   script: docker build -t experiments:$CI_COMMIT_REF_SLUG -f ./images/experiments.Dockerfile ./src/python
 
-    
 experiments:publish:
+  tags:
+    - bvm15 # Use our Drexel machine
   stage: publish
   only:
     refs:
@@ -45,7 +48,10 @@ experiments:publish:
       - src/python/experiment_platform/*
   script: docker tag experiments:$CI_COMMIT_REF_SLUG experiments:latest
 
+
 deploy:
+  tags:
+    - bvm15 # Use our Drexel machine
   stage: deploy
   only:
     changes:
