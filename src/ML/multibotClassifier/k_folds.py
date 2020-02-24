@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import StratifiedKFold
 
+
 def get_stratified_k_folds(users, labels, n_splits):
     """
     Performs stratified KFolds split of users
@@ -24,7 +25,6 @@ def get_stratified_k_folds(users, labels, n_splits):
 
     user_ids = users_labels.values[:,0]
     user_labels = users_labels.values[:, 1].astype(int)
-
 
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True)
 

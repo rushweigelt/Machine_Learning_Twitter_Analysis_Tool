@@ -1,17 +1,31 @@
-"""
-Script for converting the EIH datasets to our standard format
-"""
-
-
 import pandas as pd
 import numpy as np
 import sys
 import csv
 
 
-EIH_TWEET_COLS = ["userid", "user_screen_name", "user_profile_description", "user_display_name", "user_reported_location",
-                  "account_creation_date", "tweetid", "tweet_text", "follower_count", "following_count", "reply_count", "tweet_time",
-                  "like_count", "retweet_count", "hashtags", "urls", "user_mentions", "is_retweet", "tweet_client_name", "account_language", "tweet_language"]
+EIH_TWEET_COLS = ["userid", "user_screen_name",
+                  "user_profile_description",
+                  "user_display_name",
+                  "user_reported_location",
+                  "account_creation_date",
+                  "tweetid",
+                  "tweet_text",
+                  "follower_count",
+                  "following_count",
+                  "reply_count",
+                  "tweet_time",
+                  "like_count",
+                  "retweet_count",
+                  "hashtags",
+                  "urls",
+                  "user_mentions",
+                  "is_retweet",
+                  "tweet_client_name",
+                  "account_language",
+                  "tweet_language",
+				  "latitude",
+]
 
 EIH_TWEET_DTYPES = {
     "userid": str,
@@ -33,6 +47,7 @@ EIH_TWEET_DTYPES = {
     "urls": str,
     "user_mentions":str,
     "tweet_client_name": str,
+	"latitude":str
 
 }
 
@@ -52,8 +67,9 @@ EIH_COL_MAPPING = {
     "reply_count":"replycount",
     "retweet_count":"retweetcount",
     "like_count":"likecount",
-    "tweet_client":"source",
+    "tweet_client_name":"source",
     "tweet_text":"text",
+	"latitude":"geoenabled"
     }
 
 
@@ -87,6 +103,9 @@ def reformat_tweet_data(tweet_data):
     hashtag_count = c_elems(hashtags_data.values)
     mention_count = c_elems(mentions_data.values)
     url_count = c_elems(urls_data.values)
+
+    # Derive geolocation field
+    tweet_data["latitude"] = (tweet_data["latitude"] == 'present').astype(int)
 
     tweet_data = tweet_data.drop(["hashtags", "user_mentions", "urls"], axis=1)
 
@@ -130,10 +149,10 @@ def get_data(data_dir, skiprows, nrows):
 
 def main():
     # File options
-    data_dir = r"G:\Documents\Drexel\Final_Project\EIH\Iran"
-    data_file = r"iran_201906_3_tweets_csv_hashed.csv"
+    data_dir = r"G:\Documents\Drexel\Final_Project\EIH"
+    data_file = r"china_082019_3_tweets_csv_hashed_part3.csv"
     filename = data_dir + "/" + data_file
-    processed_file = "iran_2_processed.csv"
+    processed_file = "china3_processed.csv"
     append = True # Option for processing multiple files
 
 
@@ -152,6 +171,9 @@ def main():
             header = False
 
         skip = i * chunk_size
+
+        if chunk_size > file_len - skip:
+            chunk_size = file_len - skip
 
         print("Skip to %d" % skip)
 
