@@ -1,11 +1,19 @@
 # Python
 *.pyc
+__pycache__/
 env/
+
+# MLFlow
+mlruns/
 
 # IDE Config
 .idea/
 .vscode/
 
+# Jupyter
+.ipynb_checkpoints/
+
+# Datasets
 src/utils/data_management/test.go
 data/preprocessed/chinaBotsUnlabelled.csv
 data/preprocessed/combineAndLabel/chinaBotsUnlabelled_counted_StandardizedFieldnames.csv
@@ -22,5 +30,5 @@ data/chinaBotsLabelled.csv
 data/preprocessed/count/genuineUnlabelled.csv
 data/combined_multi_bot_and_genuine_200k_split.csv
 data/combined_multi_bot_and_genuine_400k_split.csv
-Rush_Example_Site_Stuff/data/combined_multi_bot_and_genuine_200k_split.csv
-Rush_Example_Site_Stuff/data/combined_multi_bot_and_genuine_400k_split.csv
+src/application_wrapper/app/js/data/combined_multi_bot_and_genuine_200k_split.csv
+src/application_wrapper/app/js/data/combined_multi_bot_and_genuine_400k_split.csv

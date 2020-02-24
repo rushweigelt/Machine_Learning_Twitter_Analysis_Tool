@@ -13,7 +13,9 @@ function Get_User_Hashtag() {
 }
 
 function run_NB() {
-	if hash node 2/dev/null; then
-		node NaiveBayes_Gaussian.js 4 2 5 20 20 1 5 3
-	fi
+	model = Setup_model();
+    prediction = model.predict(fakeDataX);
+    console.log(prediction);
+    prediction = model.predict([1,1,1,1,1,1,1,1])
+    console.log(prediction);
 }
