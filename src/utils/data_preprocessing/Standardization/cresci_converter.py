@@ -1,25 +1,30 @@
 import pandas as pd
 import csv
 
-DATA_DIR = r"G:\Documents\Drexel\Final_Project\cresci_2015_dataset\FSF"
+DATA_DIR = r"G:\Documents\Drexel\Final_Project\cresci-2017.csv\datasets_full.csv\social_spambots_1.csv\social_spambots_1.csv"
 
-#CRESCI_TWEET_COLS = ['user_id', 'retweet_count', 'reply_count', 'favorite_count', 'num_hashtags', 'num_urls', 'num_mentions']
+CRESCI_TWEET_COLS = ['user_id', 'retweet_count', 'reply_count', 'favorite_count', 'num_hashtags',
+                     'num_urls', 'num_mentions', 'created_at', 'source', 'retweeted']
 
-CRESCI_USER_COLS = ['id', 'name', 'description', 'screen_name', 'followers_count',  'friends_count', 'favourites_count', 'listed_count', 'statuses_count','lang', 'location', 'default_profile', 'default_profile_image', 'verified', 'created_at']
+CRESCI_USER_COLS = ['id', 'name', 'description', 'screen_name', 'followers_count',  'friends_count',
+                    'favourites_count', 'listed_count', 'statuses_count','lang', 'location', 'geo_enabled',
+                    'default_profile', 'default_profile_image', 'verified', 'created_at']
 
 CRESCI_USER_COL_MAPPING = { 'id':'userid',
                             'followers_count':'followerscount',
-                            'friends_count':'followingcount',
+                            'friends_count':'friendscount',
                             'name':'name',
                             'screen_name':'screenname',
                             'lang':'account_lang',
                             'location':'location',
+                            'geo_enabled':'geoenabled',
                             'default_profile_image':'defaultprofileimage',
                             'default_profile':'defaultprofile',
                             'created_at':'account_createdat',
                             'statuses_count':'statusescount',
                             'favourites_count':'favouritescount',
-                            'listed_count':'listedcount'
+                            'listed_count':'listedcount',
+                            'verified':'verified'
                             }
 
 CRESCI_TWEET_COL_MAPPING = {'id':'tweetid',
@@ -30,7 +35,10 @@ CRESCI_TWEET_COL_MAPPING = {'id':'tweetid',
                             'num_hashtags':'hashtagcount',
                             'num_urls':'urlcount',
                             'num_mentions':'mentioncount',
-                            'timestamp':'tweet_createdat'}
+                            'created_at':'tweet_createdat',
+                            'source':'source'
+                            }
+
 
 
 
@@ -67,14 +75,14 @@ def get_data(data_dir, skiprows, nrows):
     # Merge tweet and user data
     dataset = combine_users_tweets(user_data, tweet_data)
 
-    dataset.drop(columns=['created_at'], axis=1)
+    # dataset.drop(columns=['created_at'], axis=1)
 
     print(len(dataset))
 
     return dataset
 
 if __name__ == "__main__":
-
+    processed_name = "SS1_processed.csv"
     file_len = len(pd.read_csv(DATA_DIR+"/tweets.csv", usecols=["id"])) + 1
     print("Num. Tweets: %d" % file_len)
 
@@ -92,8 +100,8 @@ if __name__ == "__main__":
 
         data = get_data(DATA_DIR,skip,chunk_size-1)
 
-        with open(DATA_DIR + '/FSF_processed.csv', 'a', encoding='utf-8', newline='') as f:
+        with open(DATA_DIR + '/' + processed_name, 'a', encoding='utf-8', newline='') as f:
             data.to_csv(f, header=header, index=False, encoding='utf-8')
 
-    file_len = len(pd.read_csv(DATA_DIR + "/FSF_processed.csv", usecols=["userid"])) + 1
+    file_len = len(pd.read_csv(DATA_DIR + '/' + processed_name, usecols=["userid"])) + 1
     print("Num. Tweets: %d" % file_len)
