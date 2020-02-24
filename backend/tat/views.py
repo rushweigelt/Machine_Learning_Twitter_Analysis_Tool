@@ -81,3 +81,10 @@ def about(request):
 
     }
     return render(request, 'tat/about.html', context)
+
+def purpose(request):
+    template = loader.get_template('tat/about.html')
+    context = {
+
+    }
+    return render(request, 'tat/purpose.html', context)
