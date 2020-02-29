@@ -56,7 +56,7 @@ def GaussianNB(hashtag):
 def RandomForest(hashtag):
     m = LoadModel('RandomForestModel')
     print(hashtag)
-    x = get_all_tweets(hashtag)
+    x, y = get_all_tweets(hashtag)
     print(x)
     predictions = m.predict(x)
     print(predictions)
@@ -66,7 +66,7 @@ def RandomForest(hashtag):
     statement = "For the hashtag {}: \n Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format( hashtag, len(predictions), bot_num,
                                                                                         round(percent, 2))
     print(statement)
-    return statement
+    return statement, y
 
 #Function for our LSTM Textual Classifier
 def LSTMTextClassifier(db, collect):

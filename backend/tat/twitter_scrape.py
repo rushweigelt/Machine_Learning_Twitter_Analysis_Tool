@@ -10,6 +10,7 @@ import tweepy
 import csv
 import json
 import pandas as pd
+import requests
 
 #empty list for data, and numbers for how many tweets we pull at a time, and what our total limit is.
 data = []
@@ -61,9 +62,14 @@ def get_all_tweets(hashtag):
                        tweet.retweet_count, len(tweet.entities.get("hashtags")), len(tweet.entities.get("user_mentions")),
                        len(tweet.entities.get("urls")), 0, 0, 0] for tweet in all_tweet_data]
     text_data = [[tweet.text] for tweet in all_tweet_data]
+    #request for twitter embedding
+    tweet_request = requests.get("https://publish.twitter.com/oembed?url=https://twitter.com/" +all_tweet_data[0].user.screen_name +"/status/" + all_tweet_data[0].id_str + "&omit_script=true")
+    tweet_json = tweet_request.json()
+    tweet_html = tweet_json['html']
     #print(formatted_data)
-    print(text_data)
-    return formatted_data
+    #print(text_data)
+
+    return formatted_data, tweet_html
 
 
 #data = get_all_tweets('NewHampshire')

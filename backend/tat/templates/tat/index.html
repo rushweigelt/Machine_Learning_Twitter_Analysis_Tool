@@ -56,6 +56,33 @@ body {
   background-color: #ff8400;
   color: white;
 }
+
+.tweetHolder{
+  height:50px;
+  line-height:1em;
+  overflow:scroll;
+  padding:10px;
+  background-color:#ffc9c7;
+  color:#000;
+  scrollbar-base-color:#DEBB07;
+  margin: 10px;
+  overflow-x: hidden;
+  -webkit-box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+.tweetHolderHolder{
+  display:-webkit-inline-box;
+  width:100%;
+  background-color:ffb566;
+  -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+}
+
+.twitter-tweet{
+  margin-left:auto;
+  margin-right:auto;
+}
 </style>
 </head>
 <body>
@@ -104,6 +131,9 @@ body {
   <p> <button type="submit">Detect Bots!</button>
   </form>
   <p id="report_display">{{result}}</p>
+
+  <p id="embedded-tweets">
+    {{ embedded_tweets | safe }} <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
 </div>
 
 <!-- End smartphone / tablet look -->

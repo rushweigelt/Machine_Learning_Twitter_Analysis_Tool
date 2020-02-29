@@ -66,20 +66,31 @@ def search(request):
 
 # Create your views here.
 def index(request):
-    result = None
+    context ={
+        'result' : None,
+        'embedded_tweets' : None
+    }
     if request.GET.get('user_hashtag'):
         user_hashtag = request.GET.get('user_hashtag')
         user_model = request.GET.get('user_model', None)
         # print(user_model)
         if user_model == 'nb':
             print(user_hashtag)
-            result = GaussianNB(user_hashtag)
-            return render(request, 'tat/index.html', {'results': result})
+            context = {
+                "result" : GaussianNB(user_hashtag),
+                'embedded_tweets': "https://publish.twitter.com/oembed?url=https://twitter.com/Interior/status/463440424141459456"
+            }
+            return render(request, 'tat/index.html', context)
         else:
-            result = RandomForest(user_hashtag)
-            return render(request, 'tat/index.html', {'result': result})
+            x = RandomForest(user_hashtag)
+            print(x[1])
+            context = {
+                "result" : x[0],
+                "embedded_tweets" : x[1]
+            }
+            return render(request, 'tat/index.html', context)
         #print(user_hashtag)
-    return render(request, 'tat/index.html', {'results': result})
+    return render(request, 'tat/index.html', context)
 
 '''
 def index(request):
