@@ -81,7 +81,8 @@ body {
   <p>Leverage the power of Machine Learning to detect Propaganda Bots on Twitter.</p>
   <p>Enter the Hashtag you wish to analyze below.</p>
    <!-- Get user information here. The variables they'll be refered to our their NAMES -->
-    <form method="POST" action="/tat/search/">
+   <!-- <form method="POST" action="/tat/search/"> -->
+  <form method="GET">
         {% csrf_token %}
  <!-- Depricated after getting free-user-input working
     <select name="user_hashtag">
@@ -98,11 +99,11 @@ body {
         <br>
         <p><select name="user_model">
             <option value="nb">Naive Bayes</option>
-            <option value="LSTMText">LSTM Text Analysis</option>
+            <option value="RandomForest">Random Forest</option>
         </select></p>
   <p> <button type="submit">Detect Bots!</button>
   </form>
-  <p id="report_display"></p>
+  <p id="report_display">{{result}}</p>
 </div>
 
 <!-- End smartphone / tablet look -->

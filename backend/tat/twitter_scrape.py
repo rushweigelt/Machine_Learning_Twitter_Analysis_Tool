@@ -1,12 +1,22 @@
+'''
+Scrape Data from Twitter utilizing the Tweepy library.
+
+Rush Weigelt
+
+2/20/20
+'''
+
 import tweepy
 import csv
 import json
 import pandas as pd
 
+#empty list for data, and numbers for how many tweets we pull at a time, and what our total limit is.
 data = []
 tweets_per_pull = 20
 tweet_limit = 50
 
+#Store credentials in a json, make sure json isn't in public repo (gitignore)
 with open('tat/twitter_credentials.json') as cred_data:
     info = json.load(cred_data)
     consumer_key = info['CONSUMER_KEY']
@@ -14,6 +24,7 @@ with open('tat/twitter_credentials.json') as cred_data:
     access_key = info['ACCESS_KEY']
     access_secret = info['ACCESS_SECRET']
 
+#Grab our tweets by the user-inputted hashtag
 def get_all_tweets(hashtag):
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_key, access_secret)
@@ -43,10 +54,15 @@ def get_all_tweets(hashtag):
     #deserialise string into py obj
     parsed = json.loads(json_str)
     #print(tweet.text)
-    #print(json.dumps(parsed, indent=4, sort_keys=True))
-    formatted_data = [[tweet.user.followers_count, tweet.user.friends_count, tweet.favorite_count,
-                       tweet.retweet_count] for tweet in all_tweet_data]
-    print(formatted_data)
+    print(json.dumps(parsed, indent=4, sort_keys=True))
+    #Natural: followers Count, friendsCount, replyCount, likeCount, retweetCount, hashtagCount, mentionCount, urlCounr
+    #Engineered: accountrep, friends_growthrate, followers_growthrate
+    formatted_data = [[tweet.user.followers_count, tweet.user.friends_count, 0, tweet.favorite_count,
+                       tweet.retweet_count, len(tweet.entities.get("hashtags")), len(tweet.entities.get("user_mentions")),
+                       len(tweet.entities.get("urls")), 0, 0, 0] for tweet in all_tweet_data]
+    text_data = [[tweet.text] for tweet in all_tweet_data]
+    #print(formatted_data)
+    print(text_data)
     return formatted_data
 
 

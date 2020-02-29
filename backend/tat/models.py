@@ -7,7 +7,7 @@ Lots of helper functions
 
 #Django imports
 from django.db import models
-from .ml_models import GaussianNB, LSTMTextClassifier
+from .ml_models import GaussianNB, LSTMTextClassifier, RandomForest
 '''
 Below are our helper functions. They start with data manipulation, and then move on to model-loading
 PART I. DATA GATHERING, PREPROCESSING

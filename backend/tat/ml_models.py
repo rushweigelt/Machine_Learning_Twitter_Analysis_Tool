@@ -34,10 +34,27 @@ def LoadModel(mfn):
         model = load('tat/mlModels/gaussianNB.joblib')
     elif mfn == 'LSTMText':
         model = load('tat/mlModels/LSTMModel.joblib')
+    elif mfn == 'RandomForestModel':
+        model = load('tat/mlModels/RandomForestModel.joblib')
     return model
 
 def GaussianNB(hashtag):
     m = LoadModel('gaussianNB')
+    print(hashtag)
+    x = get_all_tweets(hashtag)
+    print(x)
+    predictions = m.predict(x)
+    print(predictions)
+    # Light number crunching for report
+    bot_num = np.sum(predictions == 'bot')
+    percent = bot_num / len(predictions) * 100
+    statement = "For the hashtag {}: \n Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format( hashtag, len(predictions), bot_num,
+                                                                                        round(percent, 2))
+    print(statement)
+    return statement
+
+def RandomForest(hashtag):
+    m = LoadModel('RandomForestModel')
     print(hashtag)
     x = get_all_tweets(hashtag)
     print(x)

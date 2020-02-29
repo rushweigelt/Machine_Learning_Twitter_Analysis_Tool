@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.core.exceptions import *
 
-from tat.models import GaussianNB, LSTMTextClassifier
+from tat.models import GaussianNB, LSTMTextClassifier, RandomForest
 
 @csrf_exempt
 def catchall_dev(request, upstream='http://localhost:3000'):
@@ -59,12 +59,29 @@ def search(request):
             print(user_hashtag)
             html = GaussianNB(user_hashtag)
         else:
-            html = LSTMTextClassifier('Hashtags', user_hashtag)
+            html = RandomForest(user_hashtag)
         print(user_hashtag)
         return HttpResponse(html)
         #return render(request, 'tat/search.html', user_hashtag)
 
 # Create your views here.
+def index(request):
+    result = None
+    if request.GET.get('user_hashtag'):
+        user_hashtag = request.GET.get('user_hashtag')
+        user_model = request.GET.get('user_model', None)
+        # print(user_model)
+        if user_model == 'nb':
+            print(user_hashtag)
+            result = GaussianNB(user_hashtag)
+            return render(request, 'tat/index.html', {'results': result})
+        else:
+            result = RandomForest(user_hashtag)
+            return render(request, 'tat/index.html', {'result': result})
+        #print(user_hashtag)
+    return render(request, 'tat/index.html', {'results': result})
+
+'''
 def index(request):
     template = loader.get_template('tat/index.html')
     user_hashtag = ''
@@ -74,16 +91,16 @@ def index(request):
     }
     #return HttpResponse(template.render(context, request))
     return render(request, 'tat/index.html', context)
-
+'''
 def about(request):
-    template = loader.get_template('tat/about.html')
+    #template = loader.get_template('tat/about.html')
     context = {
 
     }
     return render(request, 'tat/about.html', context)
 
 def purpose(request):
-    template = loader.get_template('tat/about.html')
+    #template = loader.get_template('tat/about.html')
     context = {
 
     }
