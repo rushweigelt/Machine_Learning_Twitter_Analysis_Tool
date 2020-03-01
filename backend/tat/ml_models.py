@@ -25,7 +25,7 @@ import nltk
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from .data_manipulation import *
-from .twitter_scrape import get_all_tweets
+from .twitter_scrape import get_all_tweets, get_twitter_data_lstm
 import requests
 
 '''PART II: LOAD MODEL HELPER FUNCTIONS'''
@@ -37,62 +37,80 @@ def LoadModel(mfn):
         model = load('tat/mlModels/LSTMModel.joblib')
     elif mfn == 'RandomForestModel':
         model = load('tat/mlModels/RandomForestModel.joblib')
+    elif mfn == 'ADA':
+        model = load('tat/mlModels/ADA_Model.joblib')
     return model
 
-def GaussianNB(hashtag):
-    m = LoadModel('gaussianNB')
-    print(hashtag)
-    x = get_all_tweets(hashtag)
-    print(x)
-    predictions = m.predict(x)
-    #print(predictions)
-    # Light number crunching for report
-    bot_num = np.sum(predictions == 'bot')
-    percent = bot_num / len(predictions) * 100
-    statement = "For the hashtag {}: \n Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format( hashtag, len(predictions), bot_num,
-                                                                                        round(percent, 2))
-    #print(statement)
-    return statement
-
-def RandomForest(hashtag):
-    m = LoadModel('RandomForestModel')
+#Helper function to simplify calling and running our basic SKLearn models
+def basicSKLearnModel(model, hashtag):
     print(hashtag)
     data, reconstruct = get_all_tweets(hashtag)
-    #print(data)
-    predictions = m.predict(data)
-    certainties = m.predict_proba(data)
+    # print(data)
+    # predictions = m.predict(data)
+    certainties = model.predict_proba(data)
+    predictions = []
+    # create a threshold to limit false positives
+    # c = certainties.tolist()
+    for certainty in certainties:
+        if certainty[1] >= .71:
+            pred = 1
+        else:
+            pred = 0
+        predictions.append(pred)
+
     print("prediction array:")
+    print(predictions)
+    print("certainties")
     print(certainties)
-    #get list of indexes of bots, to reconstruct and embed their tweets on page
-    preds_lst = predictions.tolist()
-    print(preds_lst)
+    # get list of indexes of bots, to reconstruct and embed their tweets on page
     i = 0
     bots = []
     embed = []
-    for prediction in preds_lst:
+    bot_sum = 0
+    for prediction in predictions:
         if prediction == 1:
             idx = i
+            bot_sum += 1
             bots.append(idx)
-            tweet_request = requests.get("https://publish.twitter.com/oembed?url=https://twitter.com/" + reconstruct[i][0] + "/status/" + reconstruct[i][1] + "&omit_script=true")
+            tweet_request = requests.get(
+                "https://publish.twitter.com/oembed?url=https://twitter.com/" + reconstruct[i][0] + "/status/" +
+                reconstruct[i][1] + "&omit_script=true")
             tweet_json = tweet_request.json()
             tweet_html = tweet_json['html']
             embed.append(tweet_html)
         i += 1
-    #print(embed)
-    #print("Bot indexes on main list:")
-    #print(bots)
+    # print(embed)
+    # print("Bot indexes on main list:")
+    # print(bots)
     # Light number crunching for report
-    bot_num = np.sum(predictions == 1)
-    percent = bot_num / len(predictions) * 100
-    statement = "For the hashtag {}: \n Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format( hashtag, len(predictions), bot_num,
-                                                                                        round(percent, 2))
+    # bot_num = sum(predictions == 1)
+    percent = bot_sum / len(predictions) * 100
+    statement = "For the hashtag {}: \n Out of {} analyzed tweets, {} are suspected bots. That is {}%!" \
+                "".format(hashtag, len(predictions), bot_sum, round(percent,2))
     print(statement)
+    # Returns the statistics and the tweets to embed
     return statement, embed
 
+
+#Gaussian Naive Bayes
+def GaussianNB(hashtag):
+    m = LoadModel('gaussianNB')
+    return basicSKLearnModel(m, hashtag)
+#Random Forest
+def RandomForest(hashtag):
+    m = LoadModel('RandomForestModel')
+    return basicSKLearnModel(m, hashtag)
+#Ada Boost
+def ADA(hashtag):
+    m = LoadModel('ADA')
+    return basicSKLearnModel(m, hashtag)
+
 #Function for our LSTM Textual Classifier
-def LSTMTextClassifier(db, collect):
+def LSTMTextClassifier(hashtag):
     #Load requested data from database
-    data = read_mongo_data(db, collect)
+    data, reconstruct = get_twitter_data_lstm(hashtag)
+    data = pd.DataFrame(data)
+    print(data)
     data = clean_twitter_data_text_analysis(data)
     #load model and weights, then open them and predict on new data
     #Utilizes a JSON object for the model and a .h5 file for the weights
@@ -112,13 +130,22 @@ def LSTMTextClassifier(db, collect):
     combined = pd.DataFrame(np.hstack((preds_arry,probs_arry)))
     preds_lst = combined[0].tolist()
     probs_lst =  combined[1].tolist()
+    bots = []
+    i = 0
+    embed = []
     #bots = 0, genuine = 1
     for x in preds_lst:
         if x ==1.0:
             preds_lst[preds_lst.index(x)] = 'genuine'
         else:
             preds_lst[preds_lst.index(x)] ='bot'
-    i = 0
+            tweet_request = requests.get(
+                "https://publish.twitter.com/oembed?url=https://twitter.com/" + reconstruct[i][0] + "/status/" +
+                reconstruct[i][1] + "&omit_script=true")
+            tweet_json = tweet_request.json()
+            tweet_html = tweet_json['html']
+            embed.append(tweet_html)
+        i += 1
     '''
     for x in preds_lst:
         print("Prediction: {}       Probability: {}".format(x, probs_lst[i]))
@@ -129,4 +156,8 @@ def LSTMTextClassifier(db, collect):
     percent = bot_num/len(preds_lst)*100
     statement = "Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format(len(preds_lst), bot_num, round(percent, 2))
     print(statement)
-    return statement
+    return statement, embed
+
+
+
+

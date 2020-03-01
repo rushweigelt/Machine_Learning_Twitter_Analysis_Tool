@@ -68,7 +68,7 @@ def clean_twitter_data_text_analysis(df):
     #Clean data exactly as we do before training model
     df.fillna(0, inplace=True)
     df = df.applymap(str)
-    df = df[df.text.apply(lambda x: x != "")]
+    df = df[df.apply(lambda x: x != "")]
     ##TAKEN FROM @sabbar
     def clean_text(text):
         # Convert words to lower case and split them
@@ -110,12 +110,12 @@ def clean_twitter_data_text_analysis(df):
         return text
     ##end taken from @sabbar
     # apply clean text to our tweet data
-    df['text'] = df['text'].map(lambda x: clean_text(x))
+    df[0] = df[0].map(lambda x: clean_text(x))
     # limit vocab size, then tokenize as a preprocessing step
     vocab_size = 20000
     tokenizer = Tokenizer(num_words=vocab_size)
-    tokenizer.fit_on_texts(df['text'])
-    sequences = tokenizer.texts_to_sequences(df['text'])
+    tokenizer.fit_on_texts(df[0])
+    sequences = tokenizer.texts_to_sequences(df[0])
     data = pad_sequences(sequences, maxlen=50)
     return data
 

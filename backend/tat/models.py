@@ -7,7 +7,7 @@ Lots of helper functions
 
 #Django imports
 from django.db import models
-from .ml_models import GaussianNB, LSTMTextClassifier, RandomForest
+from .ml_models import GaussianNB, LSTMTextClassifier, RandomForest, ADA
 '''
 Below are our helper functions. They start with data manipulation, and then move on to model-loading
 PART I. DATA GATHERING, PREPROCESSING
@@ -198,9 +198,10 @@ def GaussianNB(hashtag):
     print(statement)
     return statement
 '''
+'''
 def run_GaussianNB(hashtag):
     GaussianNB(hashtag)
 # Create your models here.
-
+'''
 
 

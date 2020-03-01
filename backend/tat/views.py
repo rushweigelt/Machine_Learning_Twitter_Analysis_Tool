@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.core.exceptions import *
 
-from tat.models import GaussianNB, LSTMTextClassifier, RandomForest
+from tat.models import GaussianNB, LSTMTextClassifier, RandomForest, ADA
 
 @csrf_exempt
 def catchall_dev(request, upstream='http://localhost:3000'):
@@ -56,10 +56,17 @@ def search(request):
         user_model = request.POST.get('user_model', None)
         #print(user_model)
         if user_model == 'nb':
-            print(user_hashtag)
+            print(user_model)
             html = GaussianNB(user_hashtag)
-        else:
+        elif user_model == 'RandomForest':
+            print(user_model)
             html = RandomForest(user_hashtag)
+        elif user_model == 'ada':
+            print(user_model)
+            html = ADA(user_hashtag)
+        elif user_model == 'lstm':
+            print(user_model)
+            html = LSTMTextClassifier(user_hashtag)
         print(user_hashtag)
         return HttpResponse(html)
         #return render(request, 'tat/search.html', user_hashtag)
@@ -73,7 +80,7 @@ def index(request):
     if request.GET.get('user_hashtag'):
         user_hashtag = request.GET.get('user_hashtag')
         user_model = request.GET.get('user_model', None)
-        # print(user_model)
+        #User Picks a Model
         if user_model == 'nb':
             print(user_hashtag)
             context = {
@@ -81,15 +88,29 @@ def index(request):
                 'embedded_tweets': "https://publish.twitter.com/oembed?url=https://twitter.com/Interior/status/463440424141459456"
             }
             return render(request, 'tat/index.html', context)
-        else:
-            x = RandomForest(user_hashtag)
+        elif user_model == 'ada':
+            x = ADA(user_hashtag)
             #print(x[1])
             context = {
                 "result" : x[0],
                 "embedded_tweets" : x[1]
             }
             return render(request, 'tat/index.html', context)
-        #print(user_hashtag)
+        elif user_model == 'RandomForest':
+            x = RandomForest(user_hashtag)
+            # print(x[1])
+            context = {
+                "result": x[0],
+                "embedded_tweets": x[1]
+            }
+            return render(request, 'tat/index.html', context)
+        elif user_model == 'lstm':
+            x = LSTMTextClassifier(user_hashtag)
+            # print(x[1])
+            context = {
+                "result": x[0],
+                "embedded_tweets": x[1]
+            }
     return render(request, 'tat/index.html', context)
 
 '''

@@ -17,7 +17,7 @@ body {
   max-width: 480px;
   margin: auto;
   background-color: #555;
-  height: 500px;
+  height: 800px;
   color: white;
   border-radius: 10px;
 }
@@ -83,6 +83,14 @@ body {
   margin-left:auto;
   margin-right:auto;
 }
+
+div.twitter {
+    background-color: lightblue;
+    max-width: 400px;
+    margin: auto;
+    max-height: 400px;
+    overflow: scroll;
+}
 </style>
 </head>
 <body>
@@ -125,15 +133,18 @@ body {
       <input type="text" id="user_hashtag" name="user_hashtag">
         <br>
         <p><select name="user_model">
-            <option value="nb">Naive Bayes</option>
             <option value="RandomForest">Random Forest</option>
+            <option value="nb">Naive Bayes</option>
+            <option value="ada">ADA Boost</option>
+            <option value="lstm">LSTM</option>
         </select></p>
   <p> <button type="submit">Detect Bots!</button>
   </form>
   <p id="report_display">{{result}}</p>
-
+ <div class="twitter">
   <p id="embedded-tweets">
     {{ embedded_tweets | safe }} <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+ </div>
 </div>
 
 <!-- End smartphone / tablet look -->
