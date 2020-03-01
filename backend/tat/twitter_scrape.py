@@ -11,6 +11,8 @@ import csv
 import json
 import pandas as pd
 import requests
+from .data_manipulation import friends_followers_ratio, account_age, growth_rate
+import numpy as np
 
 #empty list for data, and numbers for how many tweets we pull at a time, and what our total limit is.
 data = []
@@ -60,16 +62,24 @@ def get_all_tweets(hashtag):
     #Engineered: accountrep, friends_growthrate, followers_growthrate
     formatted_data = [[tweet.user.followers_count, tweet.user.friends_count, 0, tweet.favorite_count,
                        tweet.retweet_count, len(tweet.entities.get("hashtags")), len(tweet.entities.get("user_mentions")),
-                       len(tweet.entities.get("urls")), 0, 0, 0] for tweet in all_tweet_data]
+                       len(tweet.entities.get("urls")),
+                       #accountrep
+                       friends_followers_ratio(np.array(tweet.user.friends_count), np.array(tweet.user.followers_count)),
+                       #friends growth rate
+                       growth_rate(np.array(tweet.user.friends_count), account_age(np.array(tweet.user.created_at), np.array(tweet.created_at))),
+                       #followers_growthrate
+                       growth_rate(np.array(tweet.user.followers_count), account_age(np.array(tweet.user.created_at), np.array(tweet.created_at)))
+                       ] for tweet in all_tweet_data]
     text_data = [[tweet.text] for tweet in all_tweet_data]
     #request for twitter embedding
-    tweet_request = requests.get("https://publish.twitter.com/oembed?url=https://twitter.com/" +all_tweet_data[0].user.screen_name +"/status/" + all_tweet_data[0].id_str + "&omit_script=true")
-    tweet_json = tweet_request.json()
-    tweet_html = tweet_json['html']
+    tweet_reconstruct = [[tweet.user.screen_name, tweet.id_str] for tweet in all_tweet_data]
+    #tweet_request = requests.get("https://publish.twitter.com/oembed?url=https://twitter.com/" +all_tweet_data[0].user.screen_name +"/status/" + all_tweet_data[0].id_str + "&omit_script=true")
+    #tweet_json = tweet_request.json()
+    #tweet_html = tweet_json['html']
     #print(formatted_data)
     #print(text_data)
 
-    return formatted_data, tweet_html
+    return formatted_data, tweet_reconstruct
 
 
 #data = get_all_tweets('NewHampshire')

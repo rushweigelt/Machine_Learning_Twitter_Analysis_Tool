@@ -26,6 +26,7 @@ from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from .data_manipulation import *
 from .twitter_scrape import get_all_tweets
+import requests
 
 '''PART II: LOAD MODEL HELPER FUNCTIONS'''
 #helper function to load a model (mfn = Model File Name)
@@ -44,29 +45,49 @@ def GaussianNB(hashtag):
     x = get_all_tweets(hashtag)
     print(x)
     predictions = m.predict(x)
-    print(predictions)
+    #print(predictions)
     # Light number crunching for report
     bot_num = np.sum(predictions == 'bot')
     percent = bot_num / len(predictions) * 100
     statement = "For the hashtag {}: \n Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format( hashtag, len(predictions), bot_num,
                                                                                         round(percent, 2))
-    print(statement)
+    #print(statement)
     return statement
 
 def RandomForest(hashtag):
     m = LoadModel('RandomForestModel')
     print(hashtag)
-    x, y = get_all_tweets(hashtag)
-    print(x)
-    predictions = m.predict(x)
-    print(predictions)
+    data, reconstruct = get_all_tweets(hashtag)
+    #print(data)
+    predictions = m.predict(data)
+    certainties = m.predict_proba(data)
+    print("prediction array:")
+    print(certainties)
+    #get list of indexes of bots, to reconstruct and embed their tweets on page
+    preds_lst = predictions.tolist()
+    print(preds_lst)
+    i = 0
+    bots = []
+    embed = []
+    for prediction in preds_lst:
+        if prediction == 1:
+            idx = i
+            bots.append(idx)
+            tweet_request = requests.get("https://publish.twitter.com/oembed?url=https://twitter.com/" + reconstruct[i][0] + "/status/" + reconstruct[i][1] + "&omit_script=true")
+            tweet_json = tweet_request.json()
+            tweet_html = tweet_json['html']
+            embed.append(tweet_html)
+        i += 1
+    #print(embed)
+    #print("Bot indexes on main list:")
+    #print(bots)
     # Light number crunching for report
-    bot_num = np.sum(predictions == 'bot')
+    bot_num = np.sum(predictions == 1)
     percent = bot_num / len(predictions) * 100
     statement = "For the hashtag {}: \n Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format( hashtag, len(predictions), bot_num,
                                                                                         round(percent, 2))
     print(statement)
-    return statement, y
+    return statement, embed
 
 #Function for our LSTM Textual Classifier
 def LSTMTextClassifier(db, collect):

@@ -83,7 +83,7 @@ def index(request):
             return render(request, 'tat/index.html', context)
         else:
             x = RandomForest(user_hashtag)
-            print(x[1])
+            #print(x[1])
             context = {
                 "result" : x[0],
                 "embedded_tweets" : x[1]
