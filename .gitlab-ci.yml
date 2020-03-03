@@ -1,4 +1,5 @@
 stages:
+  - lint
   - build
   - test
   - publish
@@ -25,6 +26,20 @@ mlflow-server:publish:
       - images/mlflow.Dockerfile
   script: docker tag mlflow-server:$CI_COMMIT_REF_SLUG mlflow-server:latest
 
+
+experiments:lint:
+  stage: lint
+  tags:
+    - python
+  only:
+    changes:
+      - src/python/experiment_platform/*
+  script:
+    - cd src/python/experiment_platform
+    - pip3 install pipenv
+    - python3 -m pipenv sync --dev
+    - python3 -m pipenv run black --check .
+    - python3 -m pipenv run pylint *.py */*.py
 
 experiments:build:
   tags:

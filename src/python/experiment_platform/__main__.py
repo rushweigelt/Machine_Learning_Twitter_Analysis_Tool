@@ -1,31 +1,37 @@
-import mlflow
-from time import time
+"""
+Entrypoint for the experiment platform. Running this module will randomly and
+continually train new models on available datasets. All training results and
+model artifacts are stored in a central MLFlow server, specified with the
+MLFLOW_TRACKING_URI environment variable.
+"""
 import random
+from time import time
+import mlflow
 import numpy as np
 
-from .datasets import all_datasets
-from .models import all_models
-from .converters import all_converters
+from .datasets import ALL_DATASETS
+from .models import ALL_MODELS
+from .converters import ALL_CONVERTERS
 
 
 preprocessing_cache = {}
 
 while True:
-    dataset = random.choice(all_datasets)
+    dataset = random.choice(ALL_DATASETS)
     if dataset in preprocessing_cache:
         X, y = preprocessing_cache[dataset]
     else:
         print(f"loading dataset {dataset.name}")
         dataset.load()
         X, y = dataset.X, dataset.y
-        for converter in all_converters:
+        for converter in ALL_CONVERTERS:
             X, y = converter(X, y)
         preprocessing_cache[dataset] = (X, y)
 
     mlflow.set_experiment(dataset.name)
     print(f"Starting experiment for {dataset.name}")
 
-    model = random.choice(all_models)
+    model = random.choice(ALL_MODELS)
     print(f"Running model {model.name}")
 
     seed = int(random.random() * 100000)
