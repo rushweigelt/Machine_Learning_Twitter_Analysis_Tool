@@ -5,17 +5,23 @@ from .SklearnModel import SklearnModel, SCORING_FUNCS
 
 
 class SklearnGridSearchCV(SklearnModel):
-    def __init__(self, model, param_grid, name):
+    def __init__(self, model, param_grid, name, cv=5, refit=SCORING_FUNCS):
         self.child_model = model
-        self.model = GridSearchCV(
-            self.child_model, param_grid, scoring=SCORING_FUNCS, refit="precision", cv=3
-        )
+        self.param_grid = param_grid
+        self.cv = cv
         self.name = name
+        self.refit = refit
+        self.__update_model()
 
-    def scores(self, X, y, scoring=SCORING_FUNCS):
+
+    def scores(self, X, y, scoring=SCORING_FUNCS, cv=5):
+        self.cv = cv
+        self.refit = scoring
+        self.__update_model()
+
         self.model.fit(X, y)
         scores = cross_validate(
-            self.model.best_estimator_, X, y, scoring=scoring, cv=3
+            self.model.best_estimator_, X, y, scoring=scoring, cv=cv
         )
         scores = {key: score.mean() for key, score in scores.items()}
         params = {
@@ -24,3 +30,13 @@ class SklearnGridSearchCV(SklearnModel):
         }
         mlflow.log_params(params)
         return scores
+
+    
+    def __update_model(self):
+        self.model = GridSearchCV(
+            self.child_model,
+            self.param_grid,
+            scoring=SCORING_FUNCS,
+            refit="precision",
+            cv=self.cv
+        )

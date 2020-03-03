@@ -37,7 +37,7 @@ while True:
         if "estimator" in params: #This parameter won't save nicely, so just remove it
             del params["estimator"]
         mlflow.log_params(params)
-        metrics = model.scores(X, y, scoring=['recall', 'accuracy'])
+        metrics = model.scores(X, y, scoring=['recall', 'accuracy'], cv=dataset.cv)
         mlflow.log_metrics(metrics)
         model.save(
             artifact_path=model.name,

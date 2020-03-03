@@ -13,6 +13,9 @@ mlruns/
 # Jupyter
 .ipynb_checkpoints/
 
+# Gitlab
+builds/
+
 # Datasets
 src/utils/data_management/test.go
 data/preprocessed/chinaBotsUnlabelled.csv

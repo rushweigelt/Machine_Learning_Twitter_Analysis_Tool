@@ -20,7 +20,7 @@ class BaseModel(ABC):
         pass
 
     @abstractmethod
-    def scores(self, X, y, scoring=None):
+    def scores(self, X, y, scoring=None, cv=5):
         pass
 
     @abstractmethod

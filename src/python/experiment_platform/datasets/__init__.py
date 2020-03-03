@@ -25,6 +25,7 @@ all_datasets = [
             'urlcount' : np.int32,
             'label' : object,
         },
+        group_by='user_id',
         parse_dates=[1,4],
         date_parser=lambda col: pd.to_datetime(col, utc=True),
     ),

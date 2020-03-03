@@ -19,8 +19,8 @@ class SklearnModel(BaseModel):
     def score(self, X, y):
         return self.model.score(X, y)
 
-    def scores(self, X, y, scoring=SCORING_FUNCS):
-        raw_scores = cross_validate(self.model, X, y, scoring=scoring, cv=5)
+    def scores(self, X, y, scoring=SCORING_FUNCS, cv=5):
+        raw_scores = cross_validate(self.model, X, y, scoring=scoring, cv=cv)
         scores = {key: score.mean() for key, score in raw_scores.items()}
         return scores
 
