@@ -2,6 +2,7 @@ import mlflow
 from sklearn.model_selection import GridSearchCV, cross_validate
 
 from .SklearnModel import SklearnModel, SCORING_FUNCS
+from experiment_platform import PARALLELISM
 
 
 class SklearnGridSearchCV(SklearnModel):
@@ -20,7 +21,7 @@ class SklearnGridSearchCV(SklearnModel):
 
         self.model.fit(X, y)
         scores = cross_validate(
-            self.model.best_estimator_, X, y, scoring=scoring, cv=cv
+            self.model.best_estimator_, X, y, scoring=scoring, cv=cv, n_jobs=PARALLELISM
         )
         scores = {key: score.mean() for key, score in scores.items()}
         params = {
@@ -37,4 +38,5 @@ class SklearnGridSearchCV(SklearnModel):
             scoring=SCORING_FUNCS,
             refit="precision",
             cv=self.cv,
+            n_jobs=PARALLELISM,
         )

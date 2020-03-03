@@ -2,6 +2,7 @@ import mlflow.sklearn
 from sklearn.model_selection import cross_validate
 
 from .BaseModel import BaseModel
+from experiment_platform import PARALLELISM
 
 SCORING_FUNCS = ["precision", "roc_auc", "accuracy"]
 
@@ -21,7 +22,9 @@ class SklearnModel(BaseModel):
         return self.model.score(X, y)
 
     def scores(self, X, y, scoring=SCORING_FUNCS, cv=5):
-        raw_scores = cross_validate(self.model, X, y, scoring=scoring, cv=cv)
+        raw_scores = cross_validate(
+            self.model, X, y, scoring=scoring, cv=cv, n_jobs=PARALLELISM
+        )
         scores = {key: score.mean() for key, score in raw_scores.items()}
         return scores
 

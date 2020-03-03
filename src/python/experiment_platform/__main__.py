@@ -3,9 +3,9 @@ from time import time
 import random
 import numpy as np
 
-from datasets import all_datasets
-from models import all_models
-from converters import all_converters
+from .datasets import all_datasets
+from .models import all_models
+from .converters import all_converters
 
 
 preprocessing_cache = {}
