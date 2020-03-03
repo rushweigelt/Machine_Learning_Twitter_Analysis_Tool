@@ -28,17 +28,15 @@ while True:
     model = random.choice(all_models)
     print(f"Running model {model.name}")
 
-    seed = int(random.random()*100000)
+    seed = int(random.random() * 100000)
     np.random.seed(seed)
     print(f"Using random seed {seed}")
     with mlflow.start_run(run_name=f"{model.name} {time()}"):
         mlflow.set_tag("model", model.name)
         params = model.get_params()
-        if "estimator" in params: #This parameter won't save nicely, so just remove it
+        if "estimator" in params:  # This parameter won't save nicely, so just remove it
             del params["estimator"]
         mlflow.log_params(params)
-        metrics = model.scores(X, y, scoring=['recall', 'accuracy'], cv=dataset.cv)
+        metrics = model.scores(X, y, scoring=["recall", "accuracy"], cv=dataset.cv)
         mlflow.log_metrics(metrics)
-        model.save(
-            artifact_path=model.name,
-        )
+        model.save(artifact_path=model.name,)

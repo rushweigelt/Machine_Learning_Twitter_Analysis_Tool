@@ -4,13 +4,16 @@ from sklearn.model_selection import train_test_split, GroupKFold, StratifiedKFol
 
 from .BaseDataset import BaseDataset
 
+
 class CSVDataset(BaseDataset):
-    def __init__(self, path=None, label='label', name=None, types=None, group_by=None, **kwargs):
-        self.name = name if name else str(path).split('/')[-1]
+    def __init__(
+        self, path=None, label="label", name=None, types=None, group_by=None, **kwargs
+    ):
+        self.name = name if name else str(path).split("/")[-1]
         self.loaded = False
         self.group_by = group_by
         self.load = lambda: self.__load(path, label, types, group_by, **kwargs)
-        
+
     def __load(self, path, label, types, group_by, **kwargs):
         if self.loaded:
             return

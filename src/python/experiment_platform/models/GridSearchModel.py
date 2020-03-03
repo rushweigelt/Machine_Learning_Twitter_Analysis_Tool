@@ -13,7 +13,6 @@ class SklearnGridSearchCV(SklearnModel):
         self.refit = refit
         self.__update_model()
 
-
     def scores(self, X, y, scoring=SCORING_FUNCS, cv=5):
         self.cv = cv
         self.refit = scoring
@@ -31,12 +30,11 @@ class SklearnGridSearchCV(SklearnModel):
         mlflow.log_params(params)
         return scores
 
-    
     def __update_model(self):
         self.model = GridSearchCV(
             self.child_model,
             self.param_grid,
             scoring=SCORING_FUNCS,
             refit="precision",
-            cv=self.cv
+            cv=self.cv,
         )

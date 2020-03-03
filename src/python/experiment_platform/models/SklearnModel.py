@@ -5,6 +5,7 @@ from .BaseModel import BaseModel
 
 SCORING_FUNCS = ["precision", "roc_auc", "accuracy"]
 
+
 class SklearnModel(BaseModel):
     def __init__(self, model, name=None):
         self.model = model
