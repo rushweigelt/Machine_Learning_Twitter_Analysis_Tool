@@ -101,7 +101,8 @@ def index(request):
             # print(x[1])
             context = {
                 "result": x[0],
-                "embedded_tweets": x[1]
+                "embedded_tweets": x[1],
+                "map": x[2]
             }
             return render(request, 'tat/index.html', context)
         elif user_model == 'lstm':

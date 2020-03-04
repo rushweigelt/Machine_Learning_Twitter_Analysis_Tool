@@ -123,8 +123,8 @@ def get_twitter_data_lstm(hashtag):
     #print(json.dumps(parsed, indent=4, sort_keys=True))
     formatted_data = [[tweet.text] for tweet in all_tweet_data]
     tweet_reconstruct = [[tweet.user.screen_name, tweet.id_str] for tweet in all_tweet_data]
-    tweet_loc_verified = [[tweet.user.verified, tweet.geo] for tweet in all_tweet_data]
-    print("Verified and locations:")
-    print(tweet_loc_verified)
+    tweet_loc_verified = [[tweet.user.verified, tweet.user.location, tweet.geo] for tweet in all_tweet_data]
+    #print("Verified and locations:")
+    #print(tweet_loc_verified)
     #text_data = [[tweet.text] for tweet in all_tweet_data]
-    return formatted_data, tweet_reconstruct
+    return formatted_data, tweet_reconstruct, tweet_loc_verified

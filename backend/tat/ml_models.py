@@ -27,6 +27,7 @@ from keras.preprocessing.sequence import pad_sequences
 from .data_manipulation import *
 from .twitter_scrape import get_all_tweets, get_twitter_data_lstm
 import requests
+from .heat_map import create_heatmap
 
 randomforest_threshold_val = .68
 ada_boost_threshold_val = .51
@@ -62,27 +63,33 @@ def basicSKLearnModel(model, hashtag, threshold_val):
             pred = 0
         predictions.append(pred)
 
-    print("prediction array:")
-    print(predictions)
-    print("certainties")
-    print(certainties)
+    #print("prediction array:")
+    #print(predictions)
+    #print("certainties")
+    #print(certainties)
     # get list of indexes of bots, to reconstruct and embed their tweets on page
     i = 0
     bots = []
     embed = []
+    locs = []
     bot_sum = 0
     for prediction in predictions:
         #Check to ensure we're not calling verified accounts bots, as it is very unlikely
         if prediction == 1 and verified_loc[i][0] == False:
+            #add to bot list and bot sum
             idx = i
             bot_sum += 1
             bots.append(idx)
+            #Recreates the needed url to embed offending tweets
             tweet_request = requests.get(
                 "https://publish.twitter.com/oembed?url=https://twitter.com/" + reconstruct[i][0] + "/status/" +
                 reconstruct[i][1] + "&omit_script=true")
             tweet_json = tweet_request.json()
             tweet_html = tweet_json['html']
             embed.append(tweet_html)
+            #Create heatmap
+            if verified_loc[i][1] != None and verified_loc[i][1] != '':
+                locs.append(verified_loc[i][1])
         i += 1
     # print(embed)
     # print("Bot indexes on main list:")
@@ -92,9 +99,13 @@ def basicSKLearnModel(model, hashtag, threshold_val):
     percent = bot_sum / len(predictions) * 100
     statement = "For the hashtag {}: \n Out of {} analyzed tweets, {} are suspected bots. That is {}%!" \
                 "".format(hashtag, len(predictions), bot_sum, round(percent,2))
+    #create heatmap
+    #print("locations:")
+    #print(locs)
+    map = create_heatmap(locs)
     print(statement)
     # Returns the statistics and the tweets to embed
-    return statement, embed
+    return statement, embed, map
 
 
 #Gaussian Naive Bayes
@@ -113,7 +124,7 @@ def ADA(hashtag):
 #Function for our LSTM Textual Classifier
 def LSTMTextClassifier(hashtag):
     #Load requested data from database
-    data, reconstruct = get_twitter_data_lstm(hashtag)
+    data, reconstruct, ver_loc = get_twitter_data_lstm(hashtag)
     data = pd.DataFrame(data)
     print(data)
     data = clean_twitter_data_text_analysis(data)
