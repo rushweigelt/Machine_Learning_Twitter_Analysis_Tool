@@ -28,6 +28,10 @@ from .data_manipulation import *
 from .twitter_scrape import get_all_tweets, get_twitter_data_lstm
 import requests
 
+randomforest_threshold_val = .68
+ada_boost_threshold_val = .51
+nb_threshold_val = .7
+
 '''PART II: LOAD MODEL HELPER FUNCTIONS'''
 #helper function to load a model (mfn = Model File Name)
 def LoadModel(mfn):
@@ -42,9 +46,9 @@ def LoadModel(mfn):
     return model
 
 #Helper function to simplify calling and running our basic SKLearn models
-def basicSKLearnModel(model, hashtag):
+def basicSKLearnModel(model, hashtag, threshold_val):
     print(hashtag)
-    data, reconstruct = get_all_tweets(hashtag)
+    data, reconstruct, verified_loc = get_all_tweets(hashtag)
     # print(data)
     # predictions = m.predict(data)
     certainties = model.predict_proba(data)
@@ -52,7 +56,7 @@ def basicSKLearnModel(model, hashtag):
     # create a threshold to limit false positives
     # c = certainties.tolist()
     for certainty in certainties:
-        if certainty[1] >= .71:
+        if certainty[1] >= threshold_val:
             pred = 1
         else:
             pred = 0
@@ -68,7 +72,8 @@ def basicSKLearnModel(model, hashtag):
     embed = []
     bot_sum = 0
     for prediction in predictions:
-        if prediction == 1:
+        #Check to ensure we're not calling verified accounts bots, as it is very unlikely
+        if prediction == 1 and verified_loc[i][0] == False:
             idx = i
             bot_sum += 1
             bots.append(idx)
@@ -95,15 +100,15 @@ def basicSKLearnModel(model, hashtag):
 #Gaussian Naive Bayes
 def GaussianNB(hashtag):
     m = LoadModel('gaussianNB')
-    return basicSKLearnModel(m, hashtag)
+    return basicSKLearnModel(m, hashtag, nb_threshold_val)
 #Random Forest
 def RandomForest(hashtag):
     m = LoadModel('RandomForestModel')
-    return basicSKLearnModel(m, hashtag)
+    return basicSKLearnModel(m, hashtag, randomforest_threshold_val)
 #Ada Boost
 def ADA(hashtag):
     m = LoadModel('ADA')
-    return basicSKLearnModel(m, hashtag)
+    return basicSKLearnModel(m, hashtag, ada_boost_threshold_val)
 
 #Function for our LSTM Textual Classifier
 def LSTMTextClassifier(hashtag):

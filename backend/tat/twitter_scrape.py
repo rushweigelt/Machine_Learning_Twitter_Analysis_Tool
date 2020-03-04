@@ -78,8 +78,11 @@ def get_all_tweets(hashtag):
     #tweet_html = tweet_json['html']
     #print(formatted_data)
     #print(text_data)
+    tweet_loc_verified = [[tweet.user.verified, tweet.user.location, tweet.geo] for tweet in all_tweet_data]
+    print("Verified and locations:")
+    print(tweet_loc_verified)
 
-    return formatted_data, tweet_reconstruct
+    return formatted_data, tweet_reconstruct, tweet_loc_verified
 
 
 #data = get_all_tweets('NewHampshire')
@@ -112,12 +115,16 @@ def get_twitter_data_lstm(hashtag):
         if len(all_tweet_data) >= tweet_limit:
             break
     # convert to string
-    json_str = json.dumps(all_tweet_data[0]._json)
+    #uncomment to see what the json looks like in an organized fashion
+    #json_str = json.dumps(all_tweet_data[0]._json)
     # deserialise string into py obj
-    parsed = json.loads(json_str)
+    #parsed = json.loads(json_str)
     # print(tweet.text)
-    print(json.dumps(parsed, indent=4, sort_keys=True))
+    #print(json.dumps(parsed, indent=4, sort_keys=True))
     formatted_data = [[tweet.text] for tweet in all_tweet_data]
     tweet_reconstruct = [[tweet.user.screen_name, tweet.id_str] for tweet in all_tweet_data]
+    tweet_loc_verified = [[tweet.user.verified, tweet.geo] for tweet in all_tweet_data]
+    print("Verified and locations:")
+    print(tweet_loc_verified)
     #text_data = [[tweet.text] for tweet in all_tweet_data]
     return formatted_data, tweet_reconstruct
