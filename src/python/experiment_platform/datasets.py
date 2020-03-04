@@ -63,6 +63,9 @@ class MockDataset(BaseDataset):
         self.cv = StratifiedKFold().split(self.X, self.y)
 
 
+# TODO: Implement SQL/Mongo datasets (check Lucas' branch)
+# TODO: Add additional CSV datasets
+
 ALL_DATASETS = [
     CSVDataset(
         path="/data/data-sets/processed-data/combined/multi_bot_and_genuine_400k_split.csv",

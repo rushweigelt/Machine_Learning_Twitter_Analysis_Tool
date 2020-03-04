@@ -4,6 +4,8 @@ Collection of functions to handle data cleanup and conversion
 import numpy as np
 from sklearn import preprocessing
 
+# TODO: include Alex's feature engineering (different file?)
+
 
 def dates_to_floats(X, y):
     """

@@ -55,6 +55,7 @@ class BaseModel(ABC):
         Load a model from the specified uri
         """
 
+# TODO: add additional Sklearn model types
 
 ALL_MODELS = [
     SklearnModel(model=GaussianNB()),

@@ -46,3 +46,6 @@ while True:
         metrics = model.scores(X, y, scoring=["recall", "accuracy"], cv=dataset.cv)
         mlflow.log_metrics(metrics)
         model.save(artifact_path=model.name,)
+
+# TODO: refactor above logic into train_model(model, dataset) in init
+# TODO: create CLI for running specific (model, dataset) pairs
