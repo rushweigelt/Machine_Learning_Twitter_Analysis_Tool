@@ -9,6 +9,8 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neural_network import MLPClassifier
 
 from .sklearn_models import SklearnModel, SklearnGridSearchCV
 
@@ -55,16 +57,20 @@ class BaseModel(ABC):
         Load a model from the specified uri
         """
 
-# TODO: add additional Sklearn model types
 
 ALL_MODELS = [
     SklearnModel(model=GaussianNB()),
     SklearnModel(model=KNeighborsClassifier()),
     SklearnModel(model=AdaBoostClassifier()),
     SklearnModel(model=RandomForestClassifier()),
+    SklearnModel(model=DecisionTreeClassifier()),
+    SklearnModel(model=MLPClassifier()),
     SklearnGridSearchCV(
         model=KNeighborsClassifier(),
-        param_grid={"n_neighbors": range(2, 10)},
+        param_grid={
+            "n_neighbors": range(2, 10, 2),
+            "algorithm": ["ball_tree", "kd_tree"],
+        },
     ),
     SklearnGridSearchCV(
         model=RandomForestClassifier(),
