@@ -56,11 +56,14 @@ class SklearnGridSearchCV(SklearnModel):
     these hyper-models require their own special handling.
     """
 
-    def __init__(self, model, param_grid, name, scoring=None, refit=None, cv=5):
+    def __init__(self, model, param_grid, name=None, scoring=None, refit=None, cv=5):
         self.child_model = model
         self.param_grid = param_grid
         self.cv = cv
-        self.name = name
+        if name:
+            self.name = name
+        else:
+            self.name = "GridSearch" + type(model).__name__
         self.scoring = scoring
         if refit:
             self.refit = refit

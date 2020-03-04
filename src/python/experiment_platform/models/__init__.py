@@ -65,12 +65,10 @@ ALL_MODELS = [
     SklearnGridSearchCV(
         model=KNeighborsClassifier(),
         param_grid={"n_neighbors": range(2, 10)},
-        name="GridSearchKNeighbors",
     ),
     SklearnGridSearchCV(
         model=RandomForestClassifier(),
         param_grid={"n_estimators": [5, 10, 100, 200, 500]},
-        name="GridSearchRandomForest",
     ),
     SklearnGridSearchCV(
         model=AdaBoostClassifier(),
@@ -78,6 +76,5 @@ ALL_MODELS = [
             "n_estimators": [20, 50, 100, 200],
             "learning_rate": [0.1, 0.5, 0.75, 1],
         },
-        name="GridSearchAdaBoost",
     ),
 ]
