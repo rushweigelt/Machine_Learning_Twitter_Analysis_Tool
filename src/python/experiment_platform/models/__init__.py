@@ -12,8 +12,6 @@ from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 
-from .sklearn_models import SklearnModel, SklearnGridSearchCV
-
 
 class BaseModel(ABC):
     """
@@ -56,6 +54,11 @@ class BaseModel(ABC):
         """
         Load a model from the specified uri
         """
+
+
+# Fixes a circular import caused by placing it at the top
+# pylint: disable=wrong-import-position
+from experiment_platform.models.sklearn_models import SklearnModel, SklearnGridSearchCV
 
 
 ALL_MODELS = [

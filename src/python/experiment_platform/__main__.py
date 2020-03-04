@@ -11,7 +11,7 @@ import numpy as np
 
 from .datasets import ALL_DATASETS
 from .models import ALL_MODELS
-from .converters import ALL_CONVERTERS
+from .data_processing import process_all
 
 
 preprocessing_cache = {}
@@ -23,9 +23,7 @@ while True:
     else:
         print(f"loading dataset {dataset.name}")
         dataset.load()
-        X, y = dataset.X, dataset.y
-        for converter in ALL_CONVERTERS:
-            X, y = converter(X, y)
+        X, y = process_all(dataset.X, dataset.y)
         preprocessing_cache[dataset] = (X, y)
 
     mlflow.set_experiment(dataset.name)
