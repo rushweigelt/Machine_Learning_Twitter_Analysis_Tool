@@ -19,6 +19,13 @@ class BaseDataset(ABC):
         self.X = None
         self.y = None
         self.cv = None
+        self.loaded = False
+
+    def load(self):
+        """
+        Load the dataset into memory. X, y, and cv may be None before this is called
+        """
+        self.loaded = True
 
 
 class CSVDataset(BaseDataset):
@@ -37,7 +44,7 @@ class CSVDataset(BaseDataset):
     def __load(self, path, label, types, group_by, **kwargs):
         if self.loaded:
             return
-        self.loaded = True
+        super().load()
 
         df = pd.read_csv(path, dtype=types, **kwargs)
         self.y = df[label]
@@ -59,6 +66,11 @@ class MockDataset(BaseDataset):
 
     def __init__(self):
         self.name = "Mock Dataset"
+
+    def load(self):
+        if self.loaded:
+            return
+        super().load()
         self.X, self.y = load_breast_cancer(return_X_y=True)
         self.cv = StratifiedKFold().split(self.X, self.y)
 
