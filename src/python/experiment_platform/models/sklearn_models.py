@@ -62,7 +62,12 @@ class SklearnGridSearchCV(SklearnModel):
         self.cv = cv
         self.name = name
         self.scoring = scoring
-        self.refit = refit
+        if refit:
+            self.refit = refit
+        elif scoring:
+            self.refit = scoring[0]
+        else:
+            self.refit = True
         self.__update_model()
 
     def scores(self, X, y, scoring, cv=5, refit=None):
@@ -71,8 +76,8 @@ class SklearnGridSearchCV(SklearnModel):
         self.scoring = scoring
         if refit:
             self.refit = refit
-        else:
-            self.refit = scoring
+        elif self.scoring:
+            self.refit = self.scoring[0]
         self.__update_model()
 
         self.model.fit(X, y)
