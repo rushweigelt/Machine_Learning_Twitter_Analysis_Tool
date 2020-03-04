@@ -1,44 +1,43 @@
-import mlflow
-from time import time
+"""
+Entrypoint for the experiment platform. Running this module will randomly and
+continually train new models on available datasets. All training results and
+model artifacts are stored in a central MLFlow server, specified with the
+MLFLOW_TRACKING_URI environment variable.
+"""
 import random
+import itertools
+
 import numpy as np
 
-from datasets import all_datasets
-from models import all_models
-from converters import all_converters
+from experiment_platform import run_experiment
+from experiment_platform.datasets import ALL_DATASETS
+from experiment_platform.models import ALL_MODELS
+from experiment_platform.data_processing import process_all
 
 
-preprocessing_cache = {}
+def main():
+    """
+    Continually run experiments
+    """
+    datasets = itertools.cycle(ALL_DATASETS)
+    models = itertools.cycle(ALL_MODELS)
+    for dataset, model in zip(datasets, models):
+        print(f"Using dataset {dataset.name}")
+        if not dataset.loaded:
+            print(f"Loading dataset {dataset.name}")
+            dataset.load()
+            dataset.X, dataset.y = process_all(dataset.X, dataset.y)
 
-while True:
-    dataset = random.choice(all_datasets)
-    if dataset in preprocessing_cache:
-        X, y = preprocessing_cache[dataset]
-    else:
-        print(f"loading dataset {dataset.name}")
-        dataset.load()
-        X, y = dataset.X, dataset.y
-        for converter in all_converters:
-            X, y = converter(X, y)
-        preprocessing_cache[dataset] = (X, y)
+        seed = int(random.random() * 100000)
+        np.random.seed(seed)
+        print(f"Using random seed {seed}")
 
-    mlflow.set_experiment(dataset.name)
-    print(f"Starting experiment for {dataset.name}")
+        print(f"Running model {model.name}")
+        scores = run_experiment(dataset, model)
+        print(f"Results: {scores}")
 
-    model = random.choice(all_models)
-    print(f"Running model {model.name}")
 
-    seed = int(random.random()*100000)
-    np.random.seed(seed)
-    print(f"Using random seed {seed}")
-    with mlflow.start_run(run_name=f"{model.name} {time()}"):
-        mlflow.set_tag("model", model.name)
-        params = model.get_params()
-        if "estimator" in params: #This parameter won't save nicely, so just remove it
-            del params["estimator"]
-        mlflow.log_params(params)
-        metrics = model.scores(X, y, scoring=['recall', 'accuracy'])
-        mlflow.log_metrics(metrics)
-        model.save(
-            artifact_path=model.name,
-        )
+# TODO: create CLI for running specific (model, dataset) pairs
+
+if __name__ == "__main__":
+    main()

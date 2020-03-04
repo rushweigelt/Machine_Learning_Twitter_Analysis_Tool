@@ -5,9 +5,8 @@ RUN pip install pipenv
 # Use src/python as build directory
 COPY experiment_platform/ /experiment_platform
 
-WORKDIR /experiment_platform
-RUN pipenv sync
+RUN cd /experiment_platform && pipenv sync
 
 ENV MLFLOW_TRACKING_URI http://localhost:5000
 
-CMD pipenv run python -u __main__.py
+CMD pipenv run python -m experiment_platform
