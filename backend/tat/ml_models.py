@@ -149,11 +149,12 @@ def LSTMTextClassifier(hashtag):
     bots = []
     i = 0
     embed = []
+    locs = []
     #bots = 0, genuine = 1
     for x in preds_lst:
         if x ==1.0:
             preds_lst[preds_lst.index(x)] = 'genuine'
-        else:
+        elif x==0.0 and ver_loc[i][0] == False:
             preds_lst[preds_lst.index(x)] ='bot'
             tweet_request = requests.get(
                 "https://publish.twitter.com/oembed?url=https://twitter.com/" + reconstruct[i][0] + "/status/" +
@@ -161,6 +162,9 @@ def LSTMTextClassifier(hashtag):
             tweet_json = tweet_request.json()
             tweet_html = tweet_json['html']
             embed.append(tweet_html)
+            # Create heatmap
+            if ver_loc[i][1] != None and ver_loc[i][1] != '':
+                locs.append(ver_loc[i][1])
         i += 1
     '''
     for x in preds_lst:
@@ -172,6 +176,7 @@ def LSTMTextClassifier(hashtag):
     percent = bot_num/len(preds_lst)*100
     statement = "Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format(len(preds_lst), bot_num, round(percent, 2))
     print(statement)
+    create_heatmap(locs)
     return statement, embed
 
 

@@ -82,10 +82,12 @@ def index(request):
         user_model = request.GET.get('user_model', None)
         #User Picks a Model
         if user_model == 'nb':
-            print(user_hashtag)
+            #print(user_hashtag)
+            x = GaussianNB(user_hashtag)
             context = {
-                "result" : GaussianNB(user_hashtag),
-                'embedded_tweets': "https://publish.twitter.com/oembed?url=https://twitter.com/Interior/status/463440424141459456"
+                "result" : x[0],
+                'embedded_tweets': x[1],
+                "map": "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
             }
             return render(request, 'tat/index.html', context)
         elif user_model == 'ada':
@@ -93,7 +95,8 @@ def index(request):
             #print(x[1])
             context = {
                 "result" : x[0],
-                "embedded_tweets" : x[1]
+                "embedded_tweets" : x[1],
+                "map": "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
             }
             return render(request, 'tat/index.html', context)
         elif user_model == 'RandomForest':
@@ -110,7 +113,8 @@ def index(request):
             # print(x[1])
             context = {
                 "result": x[0],
-                "embedded_tweets": x[1]
+                "embedded_tweets": x[1],
+                "map": "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
             }
     return render(request, 'tat/index.html', context)
 
