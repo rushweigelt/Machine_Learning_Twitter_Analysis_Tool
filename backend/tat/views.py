@@ -102,7 +102,7 @@ def index(request):
             context = {
                 "result": x[0],
                 "embedded_tweets": x[1],
-                "map": x[2]
+                "map": "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
             }
             return render(request, 'tat/index.html', context)
         elif user_model == 'lstm':
@@ -138,3 +138,9 @@ def purpose(request):
 
     }
     return render(request, 'tat/purpose.html', context)
+
+def heatmap(request):
+    context = {
+
+    }
+    return render(request, 'tat/heatmap.html', context)

@@ -28,7 +28,7 @@ def create_heatmap(cities_list):
     #print(longs)
     gmap = gmplot.GoogleMapPlotter(39.9527237, -75.1635262, 10)
     gmap.heatmap(lats, longs)
-    map = gmap.draw("my_heatmap.html")
+    map = gmap.draw("tat/templates/tat/heatmap.html")
     return map
 
 #fake_data = ['America', 'Litchfield, CT', 'Present', 'Portland, Oregon  USA', 'Charleston, SC', 'Marietta, GA', 'Portland, Oregon  USA', 'Casa Grande,Arizona', 'United States', 'South Carolina, USA', 'United States', 'Columbia, SC', 'Portland, Oregon  USA', 'Myrtle Beach, SC', 'Washington, USA', 'Hallandale Beach', 'In a world of my own.', 'Living in a world of fools', 'Washington, USA', 'Hallandale Beach']

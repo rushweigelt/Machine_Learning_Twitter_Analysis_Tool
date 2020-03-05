@@ -20,6 +20,7 @@ from . import views
 
 app_name = 'tat'
 urlpatterns = [
+    path('heatmap/', views.heatmap, name='heatmap'),
     path('purpose/', views.purpose, name='purpose'),
     path('tat/search/', views.search, name='search'),
     path('about/', views.about, name='about'),
