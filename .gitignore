@@ -1,11 +1,22 @@
 # Python
 *.pyc
+__pycache__/
 env/
+
+# MLFlow
+mlruns/
 
 # IDE Config
 .idea/
 .vscode/
 
+# Jupyter
+.ipynb_checkpoints/
+
+# Gitlab
+builds/
+
+# Datasets
 src/utils/data_management/test.go
 data/preprocessed/chinaBotsUnlabelled.csv
 data/preprocessed/combineAndLabel/chinaBotsUnlabelled_counted_StandardizedFieldnames.csv

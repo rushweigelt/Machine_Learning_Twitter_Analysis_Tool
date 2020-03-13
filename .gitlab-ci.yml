@@ -1,37 +1,77 @@
-default:
-  image: python:3.7
-
 stages:
   - lint
+  - build
   - test
+  - publish
+  - deploy
 
-.python: &python
-  before_script:
-    - python3 -m venv env
-    - source env/bin/activate
-    - pip install pipenv
-    - cd src/python
-    - pipenv install --dev
+
+mlflow-server:build:
+  tags:
+    - bvm15 # Use our Drexel machine
+  stage: build
   only:
     changes:
-      - src/python/*
+      - images/mlflow.Dockerfile
+  script: docker build -t mlflow-server:$CI_COMMIT_REF_SLUG -f ./images/mlflow.Dockerfile ./images
 
-black:
-  <<: *python
+mlflow-server:publish:
+  tags:
+    - bvm15 # Use our Drexel machine
+  stage: publish
+  only:
+    refs:
+      - master
+    changes:
+      - images/mlflow.Dockerfile
+  script: docker tag mlflow-server:$CI_COMMIT_REF_SLUG mlflow-server:latest
+
+
+experiments:lint:
   stage: lint
+  tags:
+    - python
+  only:
+    changes:
+      - src/python/experiment_platform/*
   script:
-    - black --check **/*.py *.py
+    - cd src/python/experiment_platform
+    - pip3 install pipenv
+    - python3 -m pipenv sync --dev
+    - python3 -m pipenv run black --check .
+    - python3 -m pipenv run pylint *.py */*.py
 
-pylint:
-  <<: *python
-  stage: lint
-  allow_failure: true
-  script:
-    - pylint **/*.py *.py
+experiments:build:
+  tags:
+    - bvm15 # Use our Drexel machine
+  stage: build
+  only:
+    changes:
+      - images/experiments.Dockerfile
+      - src/python/experiment_platform/*
+  script: docker build -t experiments:$CI_COMMIT_REF_SLUG -f ./images/experiments.Dockerfile ./src/python
 
-test:
-  <<: *python
-  stage: test
-  allow_failure: true
-  script:
-    - python main.py
+experiments:publish:
+  tags:
+    - bvm15 # Use our Drexel machine
+  stage: publish
+  only:
+    refs:
+      - master
+    changes:
+      - images/experiments.Dockerfile
+      - src/python/experiment_platform/*
+  script: docker tag experiments:$CI_COMMIT_REF_SLUG experiments:latest
+
+
+deploy:
+  tags:
+    - bvm15 # Use our Drexel machine
+  stage: deploy
+  only:
+    refs:
+      - master
+    changes:
+      - images/*
+      - src/python/experiment_platform/*
+  script: docker-compose up -d

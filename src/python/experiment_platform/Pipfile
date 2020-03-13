@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = false
+
+[dev-packages]
+black = "*"
+pylint = "*"
+jupyterlab = "*"
+rope = "*"
+
+[packages]
+numpy = "*"
+pandas = "*"
+scikit-learn = "*"
+mlflow = "*"
+pymongo = "*"
+
+[requires]
+python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
