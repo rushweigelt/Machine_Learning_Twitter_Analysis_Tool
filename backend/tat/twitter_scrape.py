@@ -16,8 +16,8 @@ import numpy as np
 
 #empty list for data, and numbers for how many tweets we pull at a time, and what our total limit is.
 data = []
-tweets_per_pull = 40
-tweet_limit = 200
+tweets_per_pull = 10
+tweet_limit = 50
 
 #Store credentials in a json, make sure json isn't in public repo (gitignore)
 with open('tat/twitter_credentials.json') as cred_data:
