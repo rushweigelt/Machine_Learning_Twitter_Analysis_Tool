@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.core.exceptions import *
 
-from tat.models import GaussianNB, LSTMTextClassifier, RandomForest, ADA
+from .models import GaussianNB, LSTMTextClassifier, RandomForest, ADA
 
 @csrf_exempt
 def catchall_dev(request, upstream='http://localhost:3000'):
@@ -74,8 +74,7 @@ def search(request):
 # Create your views here.
 def index(request):
     context ={
-        'result' : None,
-        'embedded_tweets' : None
+
     }
     if request.GET.get('user_hashtag'):
         user_hashtag = request.GET.get('user_hashtag')
