@@ -18,13 +18,14 @@ from django.urls import path, re_path
 
 from . import views
 
-app_name = 'tat'
+#app_name = 'tat'
 urlpatterns = [
     path('heatmap/', views.heatmap, name='heatmap'),
     path('purpose/', views.purpose, name='purpose'),
-    path('tat/search/', views.search, name='search'),
+    path('search/', views.search, name='search'),
     path('about/', views.about, name='about'),
     path('', views.index, name='index'),
+    #path('', views.index.as_view()),
     #path('admin/', admin.site.urls),
     #re_path(r'', views.catchall),
 ]

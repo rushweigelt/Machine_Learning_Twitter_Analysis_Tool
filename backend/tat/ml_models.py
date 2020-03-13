@@ -47,7 +47,7 @@ def LoadModel(mfn):
     return model
 
 #Helper function to simplify calling and running our basic SKLearn models
-def basicSKLearnModel(model, hashtag, threshold_val):
+def basicSKLearnModel(model, hashtag, threshold_val, map_bool):
     print(hashtag)
     data, reconstruct, verified_loc = get_all_tweets(hashtag)
     # print(data)
@@ -102,27 +102,30 @@ def basicSKLearnModel(model, hashtag, threshold_val):
     #create heatmap
     #print("locations:")
     #print(locs)
-    map = create_heatmap(locs)
+    if map_bool != None:
+        map = create_heatmap(locs)
+    else:
+        map = ''
     print(statement)
     # Returns the statistics and the tweets to embed
     return statement, embed, map
 
 
 #Gaussian Naive Bayes
-def GaussianNB(hashtag):
+def GaussianNB(hashtag, map_bool):
     m = LoadModel('gaussianNB')
-    return basicSKLearnModel(m, hashtag, nb_threshold_val)
+    return basicSKLearnModel(m, hashtag, nb_threshold_val, map_bool)
 #Random Forest
-def RandomForest(hashtag):
+def RandomForest(hashtag, map_bool):
     m = LoadModel('RandomForestModel')
-    return basicSKLearnModel(m, hashtag, randomforest_threshold_val)
+    return basicSKLearnModel(m, hashtag, randomforest_threshold_val, map_bool)
 #Ada Boost
-def ADA(hashtag):
+def ADA(hashtag, map_bool):
     m = LoadModel('ADA')
-    return basicSKLearnModel(m, hashtag, ada_boost_threshold_val)
+    return basicSKLearnModel(m, hashtag, ada_boost_threshold_val, map_bool)
 
 #Function for our LSTM Textual Classifier
-def LSTMTextClassifier(hashtag):
+def LSTMTextClassifier(hashtag, map_bool):
     #Load requested data from database
     data, reconstruct, ver_loc = get_twitter_data_lstm(hashtag)
     data = pd.DataFrame(data)
@@ -176,8 +179,11 @@ def LSTMTextClassifier(hashtag):
     percent = bot_num/len(preds_lst)*100
     statement = "Out of {} analyzed tweets, {} are suspected bots. That is {}%!".format(len(preds_lst), bot_num, round(percent, 2))
     print(statement)
-    create_heatmap(locs)
-    return statement, embed
+    if map_bool != None:
+        map = create_heatmap(locs)
+    else:
+        map = ''
+    return statement, embed, map
 
 
 
