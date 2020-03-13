@@ -1,0 +1,166 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- NaiveBayes Guassian model script -->
+<script src = "js/NaiveBayes_Gaussian.js" > </script>
+<!-- main script -->
+<script src = "js/main.js" > </script>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<title>TaT: Twitter analysis Tool </title>
+<style>
+<!style order: main background, dropdown background, ______, ________, hoover top bar, top bar no hoover>
+body {
+  font-family: 'Roboto'; font-size: 22px;
+}
+.mobile-container {
+  max-width: 480px;
+  margin: auto;
+  background-color: #555;
+  height: 500px;
+  color: white;
+  border-radius: 10px;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #ffb566;
+  position: relative;
+}
+
+.topnav #myLinks {
+  display: none;
+}
+
+.topnav a {
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+.topnav a.icon {
+  background: black;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.topnav a:hover {
+  background-color: #ffdab3;
+  color: black;
+}
+
+.active {
+  color: white;
+  height: -webkit-fill-available;
+  padding: 3;
+}
+
+.logo{
+  height: 10%;
+}
+
+.tweetHolder{
+  height:250px;
+  line-height:1em;
+  overflow:scroll;
+  padding:10px;
+  background-color:#ffc9c7;
+  color:#000;
+  scrollbar-base-color:#DEBB07;
+  margin: 10px;
+  overflow-x: hidden;
+  -webkit-box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+.tweetHolderHolder{
+  display:-webkit-inline-box;
+  width:100%;
+  background-color:ffb566;
+  -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+}
+
+.twitter-tweet{
+  margin-left:auto;
+  margin-right:auto;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Top Navigation Menu -->
+<div  class="topnav">
+  <a href="./index.html"> <img src="img/logo.png" class="active logo"></img> </a>
+  <div id="myLinks">
+    <a href="./purpose.html">Purpose</a>
+    <a href="./about.html">About Us</a>
+    <a href="./contact.html">Contact</a>
+  </div>
+  <a href="javascript:void(0);" class="icon" onclick="Menu_Nav()">
+    <i class="fa fa-bars"></i>
+  </a>
+</div>
+
+<div style="padding-left:16px; font-family: 'Roboto'; font-size: 14px;">
+  <h3>Twitter Analysis Tool</h3>
+  <p>Leverage the power of Machine Learning to detect Propaganda Bots on Twitter.</p>
+  <p>Enter the Hashtag you wish to analyze below:</p>
+  <p>#<input id="user_hashtag" type="text" placeholder="Hashtag to Analyze"> </p>
+  <p> <button id="hashtag_btn" onclick="">Detect Bots!</button>
+  <p id="report_display"></p>
+</div>
+
+<!-- unhide this in devtools to see the debugging panel -->
+<div id="debugging" style="font-family: 'Roboto'; font-size: 14px;">
+  <div id="tweetData">
+    <h1>Debugging Panel </h1>
+    <h2>Tweet Data</h2>
+    <h2>User</h2>
+    <p id="user"></p>
+    <h2>Tweet Body </h2>
+    <p id="tweetbody"></p>
+    <h2>Tweet URL </h2>
+    <p id="tweeturl"></p>
+    <h2>Tweet</h2>
+
+    <div class=tweetHolderHolder>
+      <div style="width:50%;">
+        <h2 style="text-align: center">#LikelyBots</h2>
+        <div id="tweetHolder1" class=tweetHolder>
+          <p id="tweetEmbed1"></p>
+        </div>
+      </div>
+
+      <div style="width:50%;">
+        <h2 style="text-align: center;">#LikelyHuman</h2>
+        <div id="tweetHolder2" class="tweetHolder" style="background-color:c3f6c3">
+          <p id="tweetEmbed2"></p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Twitter Connection Info </h2>
+    <h3>Connected?</h3>
+    <p id="tweet_connection_status"></p>
+  </div>
+  <!--
+  <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Sunsets don&#39;t get much better than this one over <a href="https://twitter.com/GrandTetonNPS?ref_src=twsrc%5Etfw\">@GrandTetonNPS</a>. <a href="https://twitter.com/hashtag/nature?src=hash&amp;ref_src=twsrc%5Etfw">#nature</a> <a href="https://twitter.com/hashtag/sunset?src=hash&amp;ref_src=twsrc%5Etfw\">#sunset</a> <a href="http://t.co/YuKy2rcjyU">pic.twitter.com/YuKy2rcjyU</a></p>&mdash; US Department of the Interior (@Interior) <a href="https://twitter.com/Interior/status/463440424141459456?ref_src=twsrc%5Etfw\">May 5, 2014</a></blockquote>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+-->
+</div>
+
+<script>
+function Menu_Nav() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+</body>

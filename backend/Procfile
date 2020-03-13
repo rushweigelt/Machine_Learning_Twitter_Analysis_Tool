@@ -1,0 +1,1 @@
+web: gunicorn TwitterAnalysisTool.wsgi --log-file -
