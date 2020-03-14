@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'tat',
+    'frontend',
 ]
 
 MIDDLEWARE = [
@@ -139,5 +140,8 @@ WHITENOISE_ROOT = os.path.join(FRONTEND_DIR, 'build', 'root')
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-    ]
+    ],
+    'DEFAULT_RENDER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
 }
