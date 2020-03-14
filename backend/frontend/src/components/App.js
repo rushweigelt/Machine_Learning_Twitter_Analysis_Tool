@@ -1,7 +1,7 @@
-/*
+
 import React, { Component } from "react";
 import { render } from "react-dom";
-
+/*
 class App extends Component {
   constructor(props) {
     super(props);
@@ -52,6 +52,7 @@ export default App;
 const container = document.getElementById("app");
 render(<App />, container);
 */
+/*
 import React, { Component } from "react";
 import { render } from "react-dom";
 
@@ -104,6 +105,78 @@ class App extends React.Component {
 /*
 ReactDOM.render(
   <NameForm />,
+  document.getElementById('root')
+);
+
+export default App;
+
+const container = document.getElementById("app");
+render(<App />, container);
+*/
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ml_model: '',
+      user_hashtag: '',
+      map_bool: false,
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+/*
+  handleInputChange(event) {
+    const target = event.target;
+    //const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+  */
+  handleChange(event) {
+  this.setState({})
+  }
+
+  render() {
+    return (
+      <form>
+      <label>
+          Hashtag to Analyze:
+          <input
+            name="user_hashtag"
+            type="text"
+            value={this.state.user_hashtag}
+            onChange={this.handleInputChange} />
+        </label>
+        <br />
+        <label>
+          Machine Learning Model:
+          <select value={this.state.value} handleInputChange={this.handleInputChange} name="ml_model">
+            <option value="rf">Random Forest</option>
+            <option value="nb">Naive Bayes</option>
+            <option value='ada'>Ada Boost</option>
+            <option value="lstm">LSTM</option>
+            </select>
+        </label>
+        <br />
+        <label>
+          Heatmap of Suspected Bot Self-Reported Locations?:
+          <input
+            name="map_bool"
+            type="checkbox"
+            checked={this.state.map_bool}
+            onChange={this.handleInputChange} />
+        </label>
+      </form>
+    );
+  }
+}
+/*
+ReactDOM.render(
+  <Reservation />,
   document.getElementById('root')
 );
 */
