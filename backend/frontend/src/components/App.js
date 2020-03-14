@@ -122,27 +122,28 @@ class App extends React.Component {
       map_bool: false,
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-/*
+
   handleInputChange(event) {
-    const target = event.target;
-    //const value = target.type === 'checkbox' ? target.checked : target.value;
-    const value = target.
-    const name = target.name;
-
     this.setState({
-      [name]: value
-    });
-  }
-  */
-  handleChange(event) {
-  this.setState({})
+    [event.target.name] : event.target.value});
+    console.log(event.target.value)
   }
 
+  handleSubmit(event){
+    alert(this.state.ml_model.value)
+    this.setState({
+    ml_model: ml_model.value,
+    user_hashtag: user_hashtag.value,
+    map_bool: map_bool.value});
+    console.log(this.state.map_bool)
+    event.preventDefault()
+ }
   render() {
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
       <label>
           Hashtag to Analyze:
           <input
