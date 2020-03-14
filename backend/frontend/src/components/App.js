@@ -163,13 +163,15 @@ class App extends React.Component {
         </label>
         <br />
         <label>
-          Heatmap of Suspected Bot Self-Reported Locations?:
+          Heatmap of Bot Locations?:
           <input
             name="map_bool"
             type="checkbox"
             checked={this.state.map_bool}
             onChange={this.handleInputChange} />
         </label>
+        <br />
+        <input type="submit" value="Search for Bots!" />
       </form>
     );
   }
