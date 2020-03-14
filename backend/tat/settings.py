@@ -26,8 +26,8 @@ FRONTEND_DIR = os.path.abspath(os.path.join(BACKEND_DIR, '..', 'frontend'))
 SECRET_KEY = '4_o4mbm-l8bng1_=_l_57q4dyu8yq2eoxil64ijw_yy20i2#ot'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_ENV') == 'development'
-
+#DEBUG = os.environ.get('DJANGO_ENV') == 'development'
+DEBUG = True
 ALLOWED_HOSTS = ['localhost']
 
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'rest_framework',
+    'tat',
 ]
 
 MIDDLEWARE = [

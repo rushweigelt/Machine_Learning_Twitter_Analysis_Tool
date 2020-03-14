@@ -9,13 +9,18 @@ Lots of helper functions
 from django.db import models
 from .ml_models import GaussianNB, LSTMTextClassifier, RandomForest, ADA
 
+ML_MODEL_CHOICES = (
+    ('rf', 'Random Forest'),
+    ('nb', 'Naive Bayes'),
+    ('ada', 'Ada Boost'),
+    ('lstm', 'LSTM'),
+)
 #Models
 class Hashtag_Search(models.Model):
-    ml_model = None
-    user_hashtag = None
-    map_bool = False
+    ml_model = models.CharField(max_length=100, choices=ML_MODEL_CHOICES, default='rf')
+    user_hashtag = models.CharField(max_length=100)
+    map_bool = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
-    results = None
 
     class Meta:
         app_label = 'tat'
@@ -23,17 +28,15 @@ class Hashtag_Search(models.Model):
         return self.ml_model+' '+self.user_hashtag
 
 class Hashtag_Results(models.Model):
-    search = None
-    ml_output = None
-    bot_heatmap = None
+    #search = None
+    ml_output = models.CharField(max_length=100)
+    bot_heatmap = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         app_label = 'tat'
     def __str__(self):
         return self.ml_output
-
-
 
 
 

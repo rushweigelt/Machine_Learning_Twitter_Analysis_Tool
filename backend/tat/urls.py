@@ -25,6 +25,7 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('about/', views.about, name='about'),
     path('', views.index, name='index'),
+    path('api/', views.HashtagSearchCreate.as_view()),
     #path('', views.index.as_view()),
     #path('admin/', admin.site.urls),
     #re_path(r'', views.catchall),

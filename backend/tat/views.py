@@ -11,6 +11,9 @@ from django.core.exceptions import *
 
 from .models import GaussianNB, LSTMTextClassifier, RandomForest, ADA, Hashtag_Results, Hashtag_Search
 
+from .serializers import LeadSerializer, Results_Serializer
+from rest_framework import generics
+
 @csrf_exempt
 def catchall_dev(request, upstream='http://localhost:3000'):
     """
@@ -197,3 +200,11 @@ def heatmap(request):
 
     }
     return render(request, 'tat/heatmap.html', context)
+
+class HashtagSearchCreate(generics.ListCreateAPIView):
+    queryset = Hashtag_Search.objects.all()
+    serializer_class = LeadSerializer
+
+class HashtagResultsCreate(generics.ListCreateAPIView):
+    queryset = Hashtag_Results.objects.all()
+    serializer_class = Results_Serializer
