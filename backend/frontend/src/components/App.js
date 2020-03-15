@@ -31,22 +31,27 @@ class App extends React.Component {
   }
   //Handle Submit of Form. Need to add Post Method
   handleSubmit(event){
+    const target = event.target;
+    //allows for checkbox to be toggleable.
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
     this.setState({
-    ml_model: event.target.ml_model.value,
-    user_hashtag: event.target.user_hashtag.value,
-    map_bool: event.target.map_bool.value,
+    [name] : value
     });
     //console.log(this.state.map_bool)
     //form data as a form to be sent to api
     let data = new FormData();
-    data.append('ml_model', event.target.ml_model.value)
-    data.append('user_hashtag', event.target.user_hashtag.value)
+    data.append('ml_model', this.state.ml_model)
+    data.append('user_hashtag', this.state.user_hashtag)
+    data.append('map_bool', this.state.map_bool)
+    /*
     if (event.target.map_bool.value == 'on'){
         data.append('map_bool', true)
     }
     else {
         data.append('map_bool', false)
     }
+    */
     //data.append('map_bool', event.target.map_bool.value)
     //make our post event
     console.log(data)
@@ -109,7 +114,7 @@ class App extends React.Component {
           <input
             name="map_bool"
             type="checkbox"
-            checked={this.state.map_bool}
+            //checked={this.state.map_bool}
             onChange={this.handleInputChange} />
         </label>
         <br />
