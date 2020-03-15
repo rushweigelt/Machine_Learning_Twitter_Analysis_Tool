@@ -16,21 +16,6 @@ ML_MODEL_CHOICES = (
     ('lstm', 'LSTM'),
 )
 
-#Models
-class Hashtag_Search(models.Model):
-    #hashtag_search_id = models.AutoField(primary_key=True)
-    ml_model = models.CharField(max_length=100, choices=ML_MODEL_CHOICES, default='rf')
-    user_hashtag = models.CharField(max_length=100)
-    map_bool = models.BooleanField()
-    results_id = models.CharField(max_length=100, default="")
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        app_label = 'tat'
-    def __str__(self):
-        return self.ml_model+' '+self.user_hashtag
-
-
 class Hashtag_Results(models.Model):
     #hashtag_results_id = models.AutoField(primary_key=True)
     ml_output = models.CharField(max_length=100)
@@ -42,3 +27,18 @@ class Hashtag_Results(models.Model):
         app_label = 'tat'
     def __str__(self):
         return self.ml_output
+#Models
+class Hashtag_Search(models.Model):
+    #hashtag_search_id = models.AutoField(primary_key=True)
+    ml_model = models.CharField(max_length=100, choices=ML_MODEL_CHOICES, default='rf')
+    user_hashtag = models.CharField(max_length=100)
+    map_bool = models.BooleanField()
+    results_id = models.CharField(max_length=100, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+    #results = Hashtag_Results()
+
+    class Meta:
+        app_label = 'tat'
+    def __str__(self):
+        return self.ml_model+' '+self.user_hashtag
+
