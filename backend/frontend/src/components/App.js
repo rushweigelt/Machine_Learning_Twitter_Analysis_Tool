@@ -1,139 +1,30 @@
 
 import React, { Component } from "react";
 import { render } from "react-dom";
-/*
-class App extends Component {
+
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data : [], //a container for any return data we get for results
+      ml_model: '', //user-selected machine learning model to use
+      user_hashtag: '', //user-hashtag to post and search
+      map_bool: false, //map boolean
+      placeholder: "Loading", //placeholder so we know if we're not loading properly
       loaded: false,
-      placeholder: "Loading"
-    };
-  }
-
-  componentDidMount() {
-    fetch("api/")
-      .then(response => {
-        if (response.status > 400) {
-          return this.setState(() => {
-            return { placeholder: "Something went wrong!" };
-          });
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.setState(() => {
-          return {
-            data,
-            loaded: true
-          };
-        });
-      });
-  }
-
-  render() {
-    return (
-      <ul>
-        {this.state.data.map(search => {
-          return (
-            <li key={search.ml_model}>
-              {search.user_hashtag} - {search.map_bool} - {search.created_at}
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
-}
-
-export default App;
-
-const container = document.getElementById("app");
-render(<App />, container);
-*/
-/*
-import React, { Component } from "react";
-import { render } from "react-dom";
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    ml_model: '',
-    user_hashtag: '',
-    map_bool: false
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  handleInputChange(event) {
-    const target = event.target;
-    const ml_model = target.ml_model;
-    const user_hashtag = target.user_hashtag;
-    const map_bool = target.map_bool
-
-    this.setState({ml_model: event.target.ml_model, user_hashtag: event.target.user_hashtag, map_bool: event.target.map_bool});
-  }
-
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Model:
-          <select value={this.state.ml_model} onChange={this.handleInputChange}>
-          <option value='rf'>Random Forest</option>
-          <option value='nb'>Naive Bayes</option>
-          <option value='ada'>Ada Boost </option>
-          <option value='lstm'>LSTM</option>
-          </select>
-        </label>
-        <label>Hashtag:
-        <input type="text" value={this.state.user_hashtag} onChange={this.handleInputChange} />
-        <input type="submit" value="Submit" />
-      </form>
-    );
-  }
-}
-/*
-ReactDOM.render(
-  <NameForm />,
-  document.getElementById('root')
-);
-
-export default App;
-
-const container = document.getElementById("app");
-render(<App />, container);
-*/
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ml_model: '',
-      user_hashtag: '',
-      map_bool: false,
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
+  //Handle Input Changes by overwriting the current state that changed
   handleInputChange(event) {
     this.setState({
     [event.target.name] : event.target.value});
     console.log(event.target.value)
   }
-
+  //Handle Submit of Form. Need to add Post Method
   handleSubmit(event){
-    alert(this.state.ml_model.value)
     this.setState({
     ml_model: ml_model.value,
     user_hashtag: user_hashtag.value,
@@ -141,9 +32,32 @@ class App extends React.Component {
     console.log(this.state.map_bool)
     event.preventDefault()
  }
+
+ //load from db
+ componentDidMount() {
+  fetch("api/")
+  .then(response => {
+   if (response.status > 400) {
+    return this.setState(() => {
+     return { placeholder: "Something went wrong!"};
+     });
+    }
+    return response.json();
+  })
+  .then(data => {
+   this.setState(() => {
+     return {
+       data,
+       loaded: true
+       };
+      });
+     });
+   }
+  //what we're rendering. In this case, a form that will get the info we need from user
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
+      //user-hashtag
       <label>
           Hashtag to Analyze:
           <input
@@ -153,6 +67,7 @@ class App extends React.Component {
             onChange={this.handleInputChange} />
         </label>
         <br />
+        //machine learning select dropdown
         <label>
           Machine Learning Model:
           <select value={this.state.value} handleInputChange={this.handleInputChange} name="ml_model">
@@ -163,6 +78,7 @@ class App extends React.Component {
             </select>
         </label>
         <br />
+        //heatmap checkbox
         <label>
           Heatmap of Bot Locations?:
           <input
@@ -172,17 +88,22 @@ class App extends React.Component {
             onChange={this.handleInputChange} />
         </label>
         <br />
+        //submit button
         <input type="submit" value="Search for Bots!" />
+        //a spot for our return data (results)
+        <ul>
+      {this.state.data.map(search => {
+       return (
+        <li key="foo">
+         {search.ml_model} - {search.user_hashtag} - {search.map_bool}
+         </li>
+         );
+         })}
+         </ul>
       </form>
-    );
+         );
   }
 }
-/*
-ReactDOM.render(
-  <Reservation />,
-  document.getElementById('root')
-);
-*/
 export default App;
 
 const container = document.getElementById("app");
