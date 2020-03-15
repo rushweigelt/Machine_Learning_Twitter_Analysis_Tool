@@ -20,9 +20,14 @@ class App extends React.Component {
   }
   //Handle Input Changes by overwriting the current state that changed
   handleInputChange(event) {
+    const target = event.target;
+    //allows for checkbox to be toggleable.
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
     this.setState({
-    [event.target.name] : event.target.value});
-    console.log(event.target.value)
+    [name] : value
+    });
+    console.log(value)
   }
   //Handle Submit of Form. Need to add Post Method
   handleSubmit(event){
