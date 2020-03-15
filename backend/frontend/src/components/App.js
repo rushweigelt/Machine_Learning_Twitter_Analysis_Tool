@@ -31,7 +31,7 @@ class App extends React.Component {
     user_hashtag: event.target.user_hashtag.value,
     map_bool: event.target.map_bool.value,
     });
-    console.log(this.state.map_bool)
+    //console.log(this.state.map_bool)
     //form data as a form to be sent to api
     let data = new FormData();
     data.append('ml_model', event.target.ml_model.value)
@@ -42,7 +42,6 @@ class App extends React.Component {
     else {
         data.append('map_bool', false)
     }
-
     //data.append('map_bool', event.target.map_bool.value)
     //make our post event
     console.log(data)
