@@ -1,6 +1,7 @@
 
 import React, { Component } from "react";
 import { render } from "react-dom";
+import Axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -26,10 +27,30 @@ class App extends React.Component {
   //Handle Submit of Form. Need to add Post Method
   handleSubmit(event){
     this.setState({
-    ml_model: ml_model.value,
-    user_hashtag: user_hashtag.value,
-    map_bool: map_bool.value});
+    ml_model: event.target.ml_model.value,
+    user_hashtag: event.target.user_hashtag.value,
+    map_bool: event.target.map_bool.value,
+    });
     console.log(this.state.map_bool)
+    //form data as a form to be sent to api
+    let data = new FormData();
+    data.append('ml_model', event.target.ml_model.value)
+    data.append('user_hashtag', event.target.user_hashtag.value)
+    if (event.target.map_bool.value == 'on'){
+        data.append('map_bool', true)
+    }
+    else {
+        data.append('map_bool', false)
+    }
+
+    //data.append('map_bool', event.target.map_bool.value)
+    //make our post event
+    console.log(data)
+    Axios.post('api/', data)
+    .then(res => {
+    console.log(res);
+    console.log(res.data);
+    })
     event.preventDefault()
  }
 
@@ -57,7 +78,7 @@ class App extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-      //user-hashtag
+
       <label>
           Hashtag to Analyze:
           <input
@@ -67,7 +88,7 @@ class App extends React.Component {
             onChange={this.handleInputChange} />
         </label>
         <br />
-        //machine learning select dropdown
+
         <label>
           Machine Learning Model:
           <select value={this.state.value} handleInputChange={this.handleInputChange} name="ml_model">
@@ -78,7 +99,7 @@ class App extends React.Component {
             </select>
         </label>
         <br />
-        //heatmap checkbox
+
         <label>
           Heatmap of Bot Locations?:
           <input
@@ -88,9 +109,9 @@ class App extends React.Component {
             onChange={this.handleInputChange} />
         </label>
         <br />
-        //submit button
+
         <input type="submit" value="Search for Bots!" />
-        //a spot for our return data (results)
+
         <ul>
       {this.state.data.map(search => {
        return (
