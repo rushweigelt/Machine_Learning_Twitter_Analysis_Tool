@@ -112,15 +112,17 @@ class App extends React.Component {
 
         <input type="submit" value="Search for Bots!" />
 
+
         <ul>
       {this.state.data.map(search => {
        return (
-        <li key="foo">
-         {search.ml_model} - {search.user_hashtag} - {search.map_bool}
+        <li key={search.created_at}>
+         {search.id} -{search.created_at} - {search.ml_model} - {search.user_hashtag} - {search.map_bool}
          </li>
          );
          })}
          </ul>
+
       </form>
          );
   }
