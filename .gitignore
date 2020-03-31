@@ -39,3 +39,6 @@ backend/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_in
 backend/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so
 backend/django_env/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so
 backend/django_env/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so
+
+#temp
+backend/frontend/node_modules/.bin/terser
