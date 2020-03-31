@@ -1,7 +1,6 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,10 +17,11 @@
     "babel-loader": "^8.0.6",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "webpack": "^4.42.0",
+    "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "axios": "^0.19.2"
-  }
+  },
+  "description": ""
 }

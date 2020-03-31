@@ -60,6 +60,7 @@ class App extends React.Component {
     console.log(res);
     console.log(res.data);
     })
+    window.location.reload(false);
     event.preventDefault()
  }
 
