@@ -47,7 +47,7 @@ def index(request):
         # Random Forest
         elif user_model == 'rf':
             x = ml_models.RandomForest(user_hashtag, user_map_bool)
-            if user_map_bool == True:
+            if user_map_bool != None:
                 map = "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
             else:
                 map = ''
