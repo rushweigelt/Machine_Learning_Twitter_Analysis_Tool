@@ -10,9 +10,63 @@ import ml_models
 # Create your views here.
 def index(request):
 
-    x = ml_models.RandomForest("foo", True)
+    #x = ml_models.RandomForest("foo", True)
     context = {
-        "result": x[0],
-        "embedded_tweets": x[1],
     }
+    if request.GET.get('user_hashtag'):
+        # Get our info from the website
+        user_hashtag = request.GET.get('user_hashtag')
+        user_model = request.GET.get('ml_model', None)
+        user_map_bool = request.GET.get('map_bool')
+        #decide model and run
+        if user_model == 'nb':
+            x = ml_models.GaussianNB(user_hashtag, user_map_bool)
+            if user_map_bool != None:
+                map = "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
+            else:
+                map = ''
+            context = {
+                "result": x[0],
+                'embedded_tweets': x[1],
+                "map": map,
+            }
+            return render(request, 'frontend/index.html', context)
+        # Ada Boost
+        elif user_model == 'ada':
+            x = ml_models.ADA(user_hashtag, user_map_bool)
+            if user_map_bool != None:
+                map = "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
+            else:
+                map = ''
+            context = {
+                "result": x[0],
+                "embedded_tweets": x[1],
+                "map": map
+            }
+            return render(request, 'frontend/index.html', context)
+        # Random Forest
+        elif user_model == 'rf':
+            x = ml_models.RandomForest(user_hashtag, user_map_bool)
+            if user_map_bool == True:
+                map = "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
+            else:
+                map = ''
+            context = {
+                "result": x[0],
+                "embedded_tweets": x[1],
+                "map": map
+            }
+            return render(request, 'frontend/index.html', context)
+        elif user_model == 'lstm':
+            x = ml_models.LSTMTextClassifier(user_hashtag, user_map_bool)
+            if user_map_bool != None:
+                map = "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
+            else:
+                map = ''
+            context = {
+                "result": x[0],
+                "embedded_tweets": x[1],
+                "map": map
+            }
+        return render(request, 'frontend/index.html', context)
     return render(request, 'frontend/index.html', context)
