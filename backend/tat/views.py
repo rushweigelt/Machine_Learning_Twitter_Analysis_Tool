@@ -11,7 +11,7 @@ from django.core.exceptions import *
 
 from .models import GaussianNB, LSTMTextClassifier, RandomForest, ADA, Hashtag_Results, Hashtag_Search
 
-from .serializers import LeadSerializer, Results_Serializer
+from .serializers import Search_Serializer, Results_Serializer
 from rest_framework import generics
 
 @csrf_exempt
@@ -90,6 +90,11 @@ def index(request):
         search.user_hashtag = user_hashtag
         search.ml_model = user_model
         search.map_bool = user_map_bool
+        #Assign vars to our new Results Model Object
+        #results = Hashtag_Results()
+        #x = RandomForest(user_hashtag, user_map_bool)
+        #results.ml_output = x[0]
+        #results.bot_heatmap = "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
         #User Picks a Model
         #Naive Bayes
         if user_model == 'nb':
@@ -99,7 +104,7 @@ def index(request):
             else:
                 map = ''
             #Create our Database Items
-            response = Hashtag_Results
+            response = Hashtag_Results()
             response.ml_output = x[0]
             response.bot_heatmap = None
             response.search = search
@@ -119,7 +124,7 @@ def index(request):
             else:
                 map = ''
             #Create our Database Items
-            response = Hashtag_Results
+            response = Hashtag_Results()
             response.ml_output = x[0]
             response.bot_heatmap = None
             response.search = search
@@ -132,18 +137,16 @@ def index(request):
             }
             return render(request, 'tat/index.html', context)
         #Random Forest
-        elif user_model == 'RandomForest':
+        elif user_model == 'rf':
             x = RandomForest(user_hashtag, user_map_bool)
-            if user_map_bool != None:
+            if user_map_bool == True:
                 map = "<a href='localhost:8000/heatmap/'>User-Reported Location Heatmap Link </a>"
             else:
                 map = ''
-            response = Hashtag_Results
+            response = Hashtag_Results()
             response.ml_output = x[0]
-            response.bot_heatmap = None
-            response.search = search
-            search.results = response
-
+            response.bot_heatmap = map
+            print("HELLO!")
             context = {
                 "result": x[0],
                 "embedded_tweets": x[1],
@@ -157,7 +160,7 @@ def index(request):
             else:
                 map = ''
             #Create our Database Items
-            response = Hashtag_Results
+            response = Hashtag_Results()
             response.ml_output = x[0]
             response.bot_heatmap = None
             response.search = search
@@ -203,7 +206,7 @@ def heatmap(request):
 
 class HashtagSearchCreate(generics.ListCreateAPIView):
     queryset = Hashtag_Search.objects.all()
-    serializer_class = LeadSerializer
+    serializer_class = Search_Serializer
 
 class HashtagResultsCreate(generics.ListCreateAPIView):
     queryset = Hashtag_Results.objects.all()

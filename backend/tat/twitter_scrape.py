@@ -11,7 +11,7 @@ import csv
 import json
 import pandas as pd
 import requests
-from .data_manipulation import friends_followers_ratio, account_age, growth_rate
+from data_manipulation import friends_followers_ratio, account_age, growth_rate
 import numpy as np
 
 #empty list for data, and numbers for how many tweets we pull at a time, and what our total limit is.

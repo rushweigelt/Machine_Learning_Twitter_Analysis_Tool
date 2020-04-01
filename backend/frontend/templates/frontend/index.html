@@ -4,11 +4,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TAT:A Twitter Analysis Tool</title>
+    <style>
+    div.twitter {
+        background-color: white;
+        max-width: 400px;
+        margin: auto;
+        max-height: 400px;
+        overflow: scroll;
+    }
+
+    </style>
 </head>
 <body>
 <div id="app">
     <!-- React will load here -->
 </div>
+<p id="report_display">{{result}}</p>
+ <div class="twitter">
+     Fooooooo
+  <p id="embedded-tweets">
+    {{ embedded_tweets | safe }} <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+ </div>
+    <div>
+
+        {{map | safe}}
+    </div>
 </body>
 {% load static %}
 <script src='{% static "frontend/main.js" %}'></script>

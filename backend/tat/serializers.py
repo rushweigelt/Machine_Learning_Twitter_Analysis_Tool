@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Hashtag_Results, Hashtag_Search
 
-class LeadSerializer(serializers.ModelSerializer):
+class Search_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Hashtag_Search
         fields = ('id', 'ml_model', 'user_hashtag', 'map_bool', 'created_at')

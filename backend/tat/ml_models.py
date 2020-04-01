@@ -24,10 +24,14 @@ import re
 import nltk
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
-from .data_manipulation import *
-from .twitter_scrape import get_all_tweets, get_twitter_data_lstm
+import sys
+import os
+sys.path.insert(2,os.path.dirname(os.path.abspath(__file__)))
+print(os.path.dirname(os.path.abspath(__file__)))
+from data_manipulation import *
+from twitter_scrape import get_all_tweets, get_twitter_data_lstm
 import requests
-from .heat_map import create_heatmap
+from heat_map import create_heatmap
 
 randomforest_threshold_val = .68
 ada_boost_threshold_val = .51

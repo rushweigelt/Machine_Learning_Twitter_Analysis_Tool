@@ -13,10 +13,17 @@ class App extends React.Component {
       map_bool: false, //map boolean
       placeholder: "Loading", //placeholder so we know if we're not loading properly
       loaded: false,
+      isHidden: true,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  toggleHidden() {
+  this.setState({
+    isHidden: !this.state.isHidden
+  })
   }
   //Handle Input Changes by overwriting the current state that changed
   handleInputChange(event) {
@@ -60,7 +67,8 @@ class App extends React.Component {
     console.log(res);
     console.log(res.data);
     })
-    window.location.reload(false);
+    displayResults()
+    //window.location.reload(false);
     event.preventDefault()
  }
 
@@ -121,18 +129,6 @@ class App extends React.Component {
         <br />
 
         <input type="submit" value="Search for Bots!" />
-
-
-        <ul>
-      {this.state.data.map(search => {
-       return (
-        <li key={search.created_at}>
-         {search.id} -{search.created_at} - {search.ml_model} - {search.user_hashtag} - {search.map_bool}
-         </li>
-         );
-         })}
-         </ul>
-
       </form>
          );
   }
