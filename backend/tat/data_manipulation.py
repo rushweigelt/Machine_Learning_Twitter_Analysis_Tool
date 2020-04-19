@@ -1,3 +1,7 @@
+'''
+This code existed for pulling data out of the old mongodb, deprecated
+'''
+
 #Django imports
 from django.db import models
 #ML imports
@@ -18,6 +22,7 @@ import nltk
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from dateutil import parser
+
 
 
 #Hardcoded function to open our client and look at a specific collection to train our model

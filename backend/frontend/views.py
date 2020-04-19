@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import sys
 import os
+#add path so we can import, as relative import ..tat.ml_models will not work
 sys.path.insert(1, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'tat'))
 import ml_models
 
@@ -57,6 +58,7 @@ def index(request):
                 "map": map
             }
             return render(request, 'frontend/index.html', context)
+        #LSTM
         elif user_model == 'lstm':
             x = ml_models.LSTMTextClassifier(user_hashtag, user_map_bool)
             if user_map_bool != None:
@@ -68,5 +70,6 @@ def index(request):
                 "embedded_tweets": x[1],
                 "map": map
             }
-        return render(request, 'frontend/index.html', context)
+            return render(request, 'frontend/index.html', context)
+    #Blank index screen with no results showing
     return render(request, 'frontend/index.html', context)

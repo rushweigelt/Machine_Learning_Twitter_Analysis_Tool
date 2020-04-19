@@ -1,14 +1,14 @@
 '''
 Rush Weigelt
 Feb 2020
-This script is to create Django objects out of our ML models
-Lots of helper functions
+This script is to create serialized json database objects out of every search, thus storing metadata in an organized
+and efficient way. This also lessens space needed, as json objects are tiny files
 '''
 
 #Django imports
 from django.db import models
 from .ml_models import GaussianNB, LSTMTextClassifier, RandomForest, ADA
-
+#Choices for our dropdown form, first is how it will be saved, second is how it will be presented
 ML_MODEL_CHOICES = (
     ('rf', 'Random Forest'),
     ('nb', 'Naive Bayes'),
@@ -28,7 +28,6 @@ class Hashtag_Results(models.Model):
         return self.ml_output
 #Models
 class Hashtag_Search(models.Model):
-    #hashtag_search_id = models.AutoField(primary_key=True)
     ml_model = models.CharField(max_length=100, choices=ML_MODEL_CHOICES, default='rf')
     user_hashtag = models.CharField(max_length=100, default="foo")
     map_bool = models.BooleanField()

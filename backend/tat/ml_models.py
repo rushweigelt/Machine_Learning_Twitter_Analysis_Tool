@@ -26,13 +26,14 @@ from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 import sys
 import os
+#Add another path so we do not depend on relative imports
 sys.path.insert(2,os.path.dirname(os.path.abspath(__file__)))
-print(os.path.dirname(os.path.abspath(__file__)))
 from data_manipulation import *
 from twitter_scrape import get_all_tweets, get_twitter_data_lstm
 import requests
 from heat_map import create_heatmap
 
+#Certainty threshold variables for each model
 randomforest_threshold_val = .68
 ada_boost_threshold_val = .51
 nb_threshold_val = .7
@@ -53,6 +54,7 @@ def LoadModel(mfn):
 #Helper function to simplify calling and running our basic SKLearn models
 def basicSKLearnModel(model, hashtag, threshold_val, map_bool):
     print(hashtag)
+    #returned from our tweter scrape, we get the data to analyse, the data to reconstruct suspected tweets, and location data of bots
     data, reconstruct, verified_loc = get_all_tweets(hashtag)
     # print(data)
     # predictions = m.predict(data)
@@ -103,9 +105,9 @@ def basicSKLearnModel(model, hashtag, threshold_val, map_bool):
     percent = bot_sum / len(predictions) * 100
     statement = "For the hashtag {}: \n Out of {} analyzed tweets, {} are suspected bots. That is {}%!" \
                 "".format(hashtag, len(predictions), bot_sum, round(percent,2))
-    #create heatmap
     #print("locations:")
     #print(locs)
+    #Heatmap
     if map_bool != None:
         map = create_heatmap(locs)
     else:

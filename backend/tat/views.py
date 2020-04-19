@@ -60,16 +60,16 @@ def search(request):
         user_model = request.POST.get('user_model', None)
         #print(user_model)
         if user_model == 'nb':
-            print(user_model)
+            #print(user_model)
             html = GaussianNB(user_hashtag)
         elif user_model == 'RandomForest':
-            print(user_model)
+            #print(user_model)
             html = RandomForest(user_hashtag)
         elif user_model == 'ada':
-            print(user_model)
+            #print(user_model)
             html = ADA(user_hashtag)
         elif user_model == 'lstm':
-            print(user_model)
+            #print(user_model)
             html = LSTMTextClassifier(user_hashtag)
         print(user_hashtag)
         return HttpResponse(html)
@@ -146,7 +146,6 @@ def index(request):
             response = Hashtag_Results()
             response.ml_output = x[0]
             response.bot_heatmap = map
-            print("HELLO!")
             context = {
                 "result": x[0],
                 "embedded_tweets": x[1],

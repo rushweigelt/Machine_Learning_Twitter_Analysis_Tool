@@ -1,15 +1,22 @@
+'''
+This script exists to create a heatmap of the user-supplied locations of suspected bot accounts
+
+Rush Weigelt
+
+3/2/20
+'''
+
 import pandas as pd
 import gmplot
 import certifi
 import ssl
-#from Ipython.display import display
 import geopandas
 from geopy.geocoders import Nominatim
 import geopy
 
 #requires a list of city locations
 def create_heatmap(cities_list):
-    print("hello")
+    #print("hello")
     ctx = ssl.create_default_context(cafile=certifi.where())
     geopy.geocoders.options.default_ssl_context = ctx
     #data = ['Los Angeles, CA', 'Philadelphia, PA', 'Pittsburgh, PA', 'Chicago, IL', '', 'earth']
