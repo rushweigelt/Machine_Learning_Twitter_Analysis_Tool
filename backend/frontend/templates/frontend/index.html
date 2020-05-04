@@ -2,32 +2,151 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>TAT:A Twitter Analysis Tool</title>
     <style>
-    div.twitter {
-        background-color: white;
-        max-width: 400px;
-        margin: auto;
-        max-height: 400px;
-        overflow: scroll;
-    }
+    <!style order: main background, dropdown background, ______, ________, hoover top bar, top bar no hoover>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.mobile-container {
+  max-width: 480px;
+  margin: auto;
+  background-color: #555;
+  height: 800px;
+  color: white;
+  border-radius: 10px;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #ffb566;
+  position: relative;
+}
 
-    </style>
+.topnav #myLinks {
+  display: none;
+}
+
+.topnav a {
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+.topnav a.icon {
+  background: black;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.topnav a:hover {
+  background-color: #ffdab3;
+  color: black;
+}
+
+.active {
+  background-color: #ff8400;
+  color: white;
+}
+
+.tweetHolder{
+  height:50px;
+  line-height:1em;
+  overflow:scroll;
+  padding:10px;
+  background-color:#ffc9c7;
+  color:#000;
+  scrollbar-base-color:#DEBB07;
+  margin: 10px;
+  overflow-x: hidden;
+  -webkit-box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+.tweetHolderHolder{
+  display:-webkit-inline-box;
+  width:100%;
+  background-color:ffb566;
+  -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+}
+
+.twitter-tweet{
+  margin-left:auto;
+  margin-right:auto;
+}
+
+div.twitter {
+    display: block;
+    background-color: white;
+    max-width: 400px;
+    margin: auto;
+    max-height: 400px;
+    overflow: scroll;
+}
+
+div.twitter:empty {
+    display: none;
+}
+</style>
 </head>
 <body>
-<div id="app">
-    <!-- React will load here -->
-</div>
-<p id="report_display">{{result}}</p>
- <div class="twitter">
-  <p id="embedded-tweets">
-    {{ embedded_tweets | safe }} <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
- </div>
+<div class ="mobile-container">
+    <!-- Top Navigation Menu -->
+    <div class="topnav">
+      <a href="" class="active">
+         <img src="../static/images/Robot_bird.png" width="64" height="64">
+      </a>
+      <div id="myLinks">
+        <a href="purpose">Purpose</a>
+        <a href="about">About Us</a>
+        <a href="contact">Contact</a>
+      </div>
+      <a href="javascript:void(0);" class="icon" onclick="Menu_Nav()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+
+    <div id="heading">
+        <p>Leverage the power of Machine Learning to detect Propaganda Bots on Twitter.</p>
+        <p>Fill out the Form to submit an analysis request.</p>
+    </div>
+    <!-- Load react app (form) here -->
+    <div id="app">
+        <!-- React will load here -->
+    </div>
+    <div id="report">
+    <p id="report_display">{{result}}</p>
+    </div>
+     <!--report -->
+    <div class="twitter">
+        <p id="embedded-tweets">
+
+            https://twitter.com/HandsComputer/status/1257315720938967041
+        {{ embedded_tweets | safe }} <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+    </div>
+    <!-- map -->
     <div>
         {{map | safe}}
     </div>
-</body>
+    </div>
+    </body>
 {% load static %}
 <script src='{% static "frontend/main.js" %}'></script>
 </html>
+
+<script>
+function Menu_Nav() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>

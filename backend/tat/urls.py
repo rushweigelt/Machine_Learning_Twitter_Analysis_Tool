@@ -27,6 +27,7 @@ urlpatterns = [
     #path('', views.index, name='index'),
     path('api/', views.HashtagSearchCreate.as_view()),
     path('', include('frontend.urls')),
+    path('contact/', views.contact, name='contact'),
     #path('', views.index.as_view()),
     #path('admin/', admin.site.urls),
     #re_path(r'', views.catchall),

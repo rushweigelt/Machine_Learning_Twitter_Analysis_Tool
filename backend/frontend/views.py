@@ -4,15 +4,20 @@ import os
 #add path so we can import, as relative import ..tat.ml_models will not work
 sys.path.insert(1, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'tat'))
 import ml_models
+import requests
 
 
 
 
 # Create your views here.
 def index(request):
-
+    tweet_request = requests.get(
+        "https://publish.twitter.com/oembed?url=https://twitter.com/HandsComputer/status/1257315720938967041&omit_script=true")
+    tweet_json = tweet_request.json()
+    tweet_html = tweet_json['html']
     #x = ml_models.RandomForest("foo", True)
     context = {
+        "embedded_tweets": tweet_html
     }
     if request.GET.get('user_hashtag'):
         # Get our info from the website
@@ -30,6 +35,7 @@ def index(request):
                 "result": x[0],
                 'embedded_tweets': x[1],
                 "map": map,
+                "command": "Show_Tweets()",
             }
             return render(request, 'frontend/index.html', context)
         # Ada Boost

@@ -42,3 +42,5 @@ backend/django_env/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_te
 
 #temp
 backend/frontend/node_modules/.bin/terser
+backend/frontend/node_modules/.bin/terser
+backend/frontend/node_modules/.bin/terser

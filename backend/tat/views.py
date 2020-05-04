@@ -203,6 +203,12 @@ def heatmap(request):
     }
     return render(request, 'tat/heatmap.html', context)
 
+def contact(request):
+    context = {
+
+    }
+    return render(request, 'tat/contact.html', context)
+
 class HashtagSearchCreate(generics.ListCreateAPIView):
     queryset = Hashtag_Search.objects.all()
     serializer_class = Search_Serializer
