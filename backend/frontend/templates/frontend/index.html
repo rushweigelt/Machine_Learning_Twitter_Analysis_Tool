@@ -100,24 +100,24 @@ div.twitter:empty {
     <!-- Top Navigation Menu -->
     <div class="topnav">
       <a href="" class="active">
-         <img src="../static/images/Robot_bird.png" width="64" height="64">
+         <img src="../static/images/Robot_bird.png" width="44" height="44">
       </a>
       <div id="myLinks">
         <a href="purpose">Purpose</a>
         <a href="about">About Us</a>
         <a href="contact">Contact</a>
       </div>
-      <a href="javascript:void(0);" class="icon" onclick="Menu_Nav()">
+      <a href="javascript:void(0);" class="icon" onclick="Menu_Nav()" height="44">
         <i class="fa fa-bars"></i>
       </a>
     </div>
 
     <div id="heading">
-        <p>Leverage the power of Machine Learning to detect Propaganda Bots on Twitter.</p>
-        <p>Fill out the Form to submit an analysis request.</p>
+        <h3 align="center">Twitter Bot Analysis Tool</h3>
+        <p align="center">Leverage the power of Machine Learning to detect Propaganda Bots on Twitter by filling out the form below.</p>
     </div>
     <!-- Load react app (form) here -->
-    <div id="app">
+    <div id="app" align="center">
         <!-- React will load here -->
     </div>
     <div id="report">
@@ -131,7 +131,7 @@ div.twitter:empty {
         {{ embedded_tweets | safe }} <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
     </div>
     <!-- map -->
-    <div>
+    <div align="center">
         {{map | safe}}
     </div>
     </div>

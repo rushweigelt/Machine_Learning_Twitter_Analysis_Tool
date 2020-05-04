@@ -111,7 +111,6 @@ class App extends React.Component {
           Machine Learning Model:
           <select value={this.state.value} handleInputChange={this.handleInputChange} name="ml_model">
             <option value="rf">Random Forest</option>
-            <option value="nb">Naive Bayes</option>
             <option value='ada'>Ada Boost</option>
             <option value="lstm">LSTM</option>
             </select>
