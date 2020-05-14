@@ -44,3 +44,6 @@ backend/django_env/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_te
 backend/frontend/node_modules/.bin/terser
 backend/frontend/node_modules/.bin/terser
 backend/frontend/node_modules/.bin/terser
+
+#Credentials
+backend/tat/twitter_credentials.json
