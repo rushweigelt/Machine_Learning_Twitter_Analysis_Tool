@@ -1,0 +1,15 @@
+TAT -- Twitter Analysis Tool
+
+The Twitter Analysis Tool was created to solve a complex problem -- how can we better prepare for propoganda bots infiltrating our national election discourse?
+
+Obviously, the federal government isn't acting as the election draws near, and citizens deserve transparent information about who they're interacting with on social media.
+
+Our differentiating factor is that we analyze twitter by hashtag, rather than profile, to capture large-scale bot activity. 
+
+We traind our ml networks on millions of tweets, labelled by Twitter themselves from studies done in the aftermath of the 2016 Election.
+
+The data from tweets containing a user-specified hashtag is scraped, fed into our model, and then a list of suspected tweets from bots is displayed at the bottom of the page.
+
+The app was built as a webapp, in the django-react framework. The front end is ugly--I am a backend developer by nature. 
+
+While we are currently looking into hosting options, the project isn't deployable in anything but a local developer enviornment at the moment. 
