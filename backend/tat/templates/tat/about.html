@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!-- HTML Outline/Template by Rush Weigelt
+The intentions of this document are to provide an About Us template-->
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- NaiveBayes Guassian model script -->
+<script src = "NaiveBayes_Gaussian.js" > </script>
+<!-- main script -->
+<script src = "main.js" > </script>
+<!-- <href="data/combined_multi_bot_and_genuine_150.0k_split.csv"></href> -->
+
+<title>TaT: Twitter analysis Tool </title>
+<style>
+<!style order: main background, dropdown background, ______, ________, hoover top bar, top bar no hoover>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.mobile-container {
+  max-width: 480px;
+  margin: auto;
+  background-color: #555;
+  height: 500px;
+  color: white;
+  border-radius: 10px;
+  overflow: scroll;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #ffb566;
+  position: relative;
+}
+
+.topnav #myLinks {
+  display: none;
+}
+
+.topnav a {
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+.topnav a.icon {
+  background: black;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.topnav a:hover {
+  background-color: #ffdab3;
+  color: black;
+}
+
+.active {
+  background-color: #ff8400;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<!-- Simulate a smartphone / tablet -->
+<div class="mobile-container">
+
+<!-- Top Navigation Menu -->
+<div class="topnav">
+  <a href=".." class="active">
+    <img src="../static/images/Robot_bird.png" width="64" height="54">
+  </a>
+  <div id="myLinks">
+    <a href="../purpose">Purpose</a>
+    <a href="../contact">Contact</a>
+  </div>
+  <a href="javascript:void(0);" class="icon" onclick="Menu_Nav()">
+    <i class="fa fa-bars"></i>
+  </a>
+</div>
+
+<div style="padding-left:16px">
+  <h2>Meet the team!</h2>
+  <img src="../static/images/rush.jpg" width="250" height="250">
+  <h3>Rush Weigelt</h3>
+  <h4>Project Lead</h4>
+  <p>Rush had a little hand in almost everything. From model creation to django and react, Rush tried to fill in the gaps.</p>
+
+  <img src="../static/images/alex.jpg" width="250" height="250">
+  <h3>Alex Sladek</h3>
+  <h4>Machine Learning Lead</h4>
+  <p>Alex focused on model creation, feature engineering, and academic research.</p>
+
+  <img src="../static/images/lucas.jpg" width="250" height="250">
+  <h3>Lucas Vitalos</h3>
+  <h4>Machine Learning Engineer</h4>
+  <p>Lucas focused on model creation as well as connectors between our database and backend.</p>
+
+  <img src="../static/images/eric.jpg" width="250" height="250">
+  <h3>Eric Benton</h3>
+  <h4>Backend Engineer</h4>
+  <p>Eric focused on training and testing a variety of ML models, as well as creating reports logging the results.</p>
+
+  <img src="../static/images/phil.png" width="250" height="250">
+  <h3>Phil Stephenson</h3>
+  <h4>Automation Engineer</h4>
+  <p>Phil focused on automating both our github testing integration as well as our model training utilizing MLFlow.</p>
+
+  <img src="../static/images/bryce.png" width="250" height="250">
+  <h3>Bryce Eller</h3>
+  <h4>Frontend Engineer</h4>
+  <p>Bryce did our logo and diagram design work as well as doing backend work regarding our database.</p>
+
+  <img src="../static/images/chris.jpg" width="250" height="250">
+  <h3>Chris Bakopoulos</h3>
+  <h4>Data Engineer</h4>
+  <p>Chris focused on creating and maintaining our database with an eye towards keeping multiple Machine Learning Engineers satisfied.</p>
+
+
+
+</div>
+
+<!-- End smartphone / tablet look -->
+</div>
+
+<script>
+function Menu_Nav() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+
+Fold 0: 51%
+Fold 1: 76%
+Fold 2: 72%
+Fold 3: 70%
+Fold 4: 72%

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- HTML Outline/Template by Rush Weigelt
+The intentions of this document are to provide an About Us template-->
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<title>TaT: Twitter analysis Tool </title>
+<style>
+<!style order: main background, dropdown background, ______, ________, hoover top bar, top bar no hoover>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.mobile-container {
+  max-width: 480px;
+  margin: auto;
+  background-color: #555;
+  height: 500px;
+  color: white;
+  border-radius: 10px;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #ffb566;
+  position: relative;
+}
+
+.topnav #myLinks {
+  display: none;
+}
+
+.topnav a {
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+.topnav a.icon {
+  background: black;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.topnav a:hover {
+  background-color: #ffdab3;
+  color: black;
+}
+
+.active {
+  background-color: #ff8400;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<!-- Simulate a smartphone / tablet -->
+<div class="mobile-container">
+
+<!-- Top Navigation Menu -->
+<div class="topnav">
+  <a href=".." class="active">
+    <img src="../static/images/Robot_bird.png" width="64" height="54">
+  </a>
+  <div id="myLinks">
+    <a href="../about">About Us</a>
+    <a href="../contact">Contact</a>
+  </div>
+  <a href="javascript:void(0);" class="icon" onclick="Menu_Nav()">
+    <i class="fa fa-bars"></i>
+  </a>
+</div>
+
+<div style="padding-left:16px">
+  <h3>PURPOSE</h3>
+  <p>We wanted to do a project that reflected a public good. Political bots are a major problem in our democracy,
+  and we want to expose these networks and their attempts to sway our democracy in 2020 and beyond.</p>
+</div>
+
+<!-- End smartphone / tablet look -->
+</div>
+
+<script>
+function Menu_Nav() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+</body>
+</html>

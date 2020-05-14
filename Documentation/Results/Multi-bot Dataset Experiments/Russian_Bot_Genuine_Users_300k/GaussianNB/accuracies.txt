@@ -1,0 +1,5 @@
+Test fold 0 score: 0.41783849382633576
+Test fold 1 score: 0.5901004504471404
+Test fold 2 score: 0.8770143749431885
+Test fold 3 score: 0.7070955028973165
+Test fold 4 score: 0.8970904187237155
