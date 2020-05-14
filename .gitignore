@@ -1,0 +1,46 @@
+# Python
+*.pyc
+__pycache__/
+env/
+
+# MLFlow
+mlruns/
+
+# IDE Config
+.idea/
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Gitlab
+builds/
+
+# Datasets
+src/utils/data_management/test.go
+data/preprocessed/chinaBotsUnlabelled.csv
+data/preprocessed/combineAndLabel/chinaBotsUnlabelled_counted_StandardizedFieldnames.csv
+data/preprocessed/combineAndLabel/genuineUnlabelled_modified_StandardizedFieldnames.csv
+data/preprocessed/count/chinaBotsUnlabelled.csv
+data/preprocessed/genuineUnlabelled.csv
+data/preprocessed/standardizeFieldnames/chinaBotsUnlabelled_counted.csv
+data/Combined_chinaBotsUnlabelled_counted_StandardizedFieldnames_AND_genuineUnlabelled_modified_StandardizedFieldnames.csv
+data/preprocessed/tweetsGenuineUnlabelled.csv
+data/preprocessed/combineAndLabel/genuineUnlabelled_StandardizedFieldnames.csv
+data/preprocessed/standardizeFieldnames/genuineUnlabelled.csv
+data/tweetsGenuineUnlabelled.csv
+data/chinaBotsLabelled.csv
+data/preprocessed/count/genuineUnlabelled.csv
+data/combined_multi_bot_and_genuine_200k_split.csv
+data/combined_multi_bot_and_genuine_400k_split.csv
+src/application_wrapper/app/js/data/combined_multi_bot_and_genuine_200k_split.csv
+src/application_wrapper/app/js/data/combined_multi_bot_and_genuine_400k_split.csv/Users/RushWeigelt/Documents/GitHub/Twitter-Analysis-Tool/backend/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so
+backend/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so
+backend/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so
+backend/django_env/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so
+backend/django_env/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so
+
+#temp
+backend/frontend/node_modules/.bin/terser
+backend/frontend/node_modules/.bin/terser
+backend/frontend/node_modules/.bin/terser
