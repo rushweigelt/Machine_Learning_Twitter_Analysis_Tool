@@ -27,11 +27,17 @@ from keras.preprocessing.sequence import pad_sequences
 import sys
 import os
 #Add another path so we do not depend on relative imports
-sys.path.insert(2,os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(2, os.path.dirname(os.path.abspath(__file__)))
 from data_manipulation import *
 from twitter_scrape import get_all_tweets, get_twitter_data_lstm
 import requests
 from heat_map import create_heatmap
+
+from EnsembleModel import EnsembleModel
+
+COLS = ['followerscount','friendscount','replycount','likecount','retweetcount',
+		'hashtagcount','mentioncount','urlcount',
+        'accountrep', 'friends_growthrate', 'followers_growthrate']
 
 #Certainty threshold variables for each model
 randomforest_threshold_val = .68
@@ -49,15 +55,23 @@ def LoadModel(mfn):
         model = load('tat/mlModels/RandomForestModel.joblib')
     elif mfn == 'ADA':
         model = load('tat/mlModels/ADA_Model.joblib')
+    elif mfn == 'Ensemble':
+        model = load('tat/mlModels/ensemble_model.joblib')
+    elif mfn == 'EnsembleLSTM':
+        model = load('tat/mlModels/LSTM_ensemble_model.joblib')
     return model
 
 #Helper function to simplify calling and running our basic SKLearn models
-def basicSKLearnModel(model, hashtag, threshold_val, map_bool):
+def basicSKLearnModel(model, hashtag, threshold_val, map_bool, is_ensemble=False):
     print(hashtag)
     #returned from our tweter scrape, we get the data to analyse, the data to reconstruct suspected tweets, and location data of bots
     data, reconstruct, verified_loc = get_all_tweets(hashtag)
     # print(data)
     # predictions = m.predict(data)
+
+    if is_ensemble:
+        data = pd.DataFrame(data=data, index=None, columns=COLS)
+
     certainties = model.predict_proba(data)
     predictions = []
     # create a threshold to limit false positives
